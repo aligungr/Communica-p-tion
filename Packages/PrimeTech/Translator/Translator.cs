@@ -14,7 +14,7 @@ namespace Translator
         public string Translate(string text, string targetLanguage)
         {
             LanguagesEnum enumObject = new LanguagesEnum();
-            string targetLang = enumObject.GetType().GetField(targetLanguage).GetValue(enumObject);
+            string targetLang = enumObject.GetType().GetField(targetLanguage).GetValue(enumObject).ToString();
 
             //Yandex automatically detects language from given text.
             YandexTranslator translateObject = new YandexTranslator();  
@@ -22,7 +22,7 @@ namespace Translator
 
             return result;
         }
-        
+
         public string TranslateText(string text, string lang)
         {
             using (var wb = new WebClient())
@@ -30,19 +30,14 @@ namespace Translator
                 var reqData = new NameValueCollection();
                 reqData["text"] = text; // text to translate
                 reqData["lang"] = lang; // target language
-                reqData["key"] = "";
+                reqData["key"] = "API-KEY HERE";
 
                 try
                 {
                     var response = wb.UploadValues("https://translate.yandex.net/api/v1.5/tr.json/translate", "POST", reqData);
                     string responseInString = Encoding.UTF8.GetString(response);
-
                     var rootObject = JsonConvert.DeserializeObject<Translation>(responseInString);
-                    /* Console.WriteLine($"Original text: {reqData["text"]}\n" +
-                        $"Translated text: {rootObject.text[0]}\n" +
-                        $"Lang: {rootObject.lang}");
-
-                    Console.ReadLine(); */
+                    
                     return rootObject.text[0];
                 }
                 catch (Exception ex)
