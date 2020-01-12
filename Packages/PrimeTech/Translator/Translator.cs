@@ -6,27 +6,23 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Text;
 
-namespace yandexapi
+namespace Translator
 { 
-    //TODO- Google API'si ile karşılaştırılacak
+    //TODO - Compare to Google API
     class YandexTranslator
     {
-        public string Translate(string text, string translateTo)
+        public string Translate(string text, string targetLanguage)
         {
             LanguagesEnum enumObject = new LanguagesEnum();
-            string lang = enumObject.GetType().GetField(translateTo).GetValue(enumObject);
+            string targetLang = enumObject.GetType().GetField(targetLanguage).GetValue(enumObject);
 
-            //Yandex automatically detects languages from given text.
-            YandexTranslator translateObject = new YandexTranslator();
-            string result = translateObject.TranslateText(text, translateTo);
+            //Yandex automatically detects language from given text.
+            YandexTranslator translateObject = new YandexTranslator();  
+            string result = translateObject.TranslateText(text, targetLang);
 
             return result;
         }
-        static void Main(string[] args)
-        {
-            //Program translateObject = new Program();
-            //string result = translateObject.TranslateText("Tomaten.", "tr");
-        }
+        
         public string TranslateText(string text, string lang)
         {
             using (var wb = new WebClient())
@@ -34,7 +30,6 @@ namespace yandexapi
                 var reqData = new NameValueCollection();
                 reqData["text"] = text; // text to translate
                 reqData["lang"] = lang; // target language
-                //reqData["key"] = "trnsl.1.1.20200108T125628Z.7b77bb98c7754634.9e5d6a18d335a2610e6371bcb7e3fd4bd466a5cc";
                 reqData["key"] = "";
 
                 try
@@ -43,11 +38,11 @@ namespace yandexapi
                     string responseInString = Encoding.UTF8.GetString(response);
 
                     var rootObject = JsonConvert.DeserializeObject<Translation>(responseInString);
-                    Console.WriteLine($"Original text: {reqData["text"]}\n" +
+                    /* Console.WriteLine($"Original text: {reqData["text"]}\n" +
                         $"Translated text: {rootObject.text[0]}\n" +
                         $"Lang: {rootObject.lang}");
 
-                    Console.ReadLine();
+                    Console.ReadLine(); */
                     return rootObject.text[0];
                 }
                 catch (Exception ex)
@@ -60,7 +55,12 @@ namespace yandexapi
         }
     }
 
-    public class Translation
+    class GoogleTranslate
+    {
+
+    }
+    
+    class Translation
     {
         public int code { get; set; }
         public string lang { get; set; }
