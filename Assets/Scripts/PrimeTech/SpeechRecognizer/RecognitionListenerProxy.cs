@@ -71,8 +71,8 @@ namespace PrimeTech.SpeechRecognizer {
         /// <param name="partialResults"></param>
         public void onPartialResults(AndroidJavaObject partialResults) {
             var bundle = new AndroidBundle(partialResults);
-            var recognized = bundle.GetStringList(AndroidSpeechRecognizer.RESULTS_RECOGNITION);
-            var confidence = bundle.GetFloatArray(AndroidSpeechRecognizer.CONFIDENCE_SCORES);
+            var recognized = bundle.GetStringList(SpeechRecognizerConstants.RESULTS_RECOGNITION);
+            var confidence = bundle.GetFloatArray(SpeechRecognizerConstants.CONFIDENCE_SCORES);
 
             Debug.Log("RecognitionListenerProxy|onPartialResults|" + recognized[0]);
         }
@@ -83,8 +83,8 @@ namespace PrimeTech.SpeechRecognizer {
         /// <param name="results"></param>
         public void onResults(AndroidJavaObject results) {
             var bundle = new AndroidBundle(results);
-            var recognized = bundle.GetStringList(AndroidSpeechRecognizer.RESULTS_RECOGNITION);
-            var confidence = bundle.GetFloatArray(AndroidSpeechRecognizer.CONFIDENCE_SCORES);
+            var recognized = bundle.GetStringList(SpeechRecognizerConstants.RESULTS_RECOGNITION);
+            var confidence = bundle.GetFloatArray(SpeechRecognizerConstants.CONFIDENCE_SCORES);
 
             Debug.Log("RecognitionListenerProxy|onResults|" + recognized[0]);
         }
