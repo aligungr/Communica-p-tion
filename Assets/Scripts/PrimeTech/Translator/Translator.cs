@@ -1,37 +1,34 @@
-﻿using LanguagesEnum;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
 using System.Text;
+using PrimeTech.Core;
 
 namespace Translator
 {
     //TODO - Compare to Google API
-    class Translator 
+    public class Translator : MonoBehaviour
     {
         
-        public string Translate(string text, string targetLanguage)
+        public string Translate(string text, Language language)
         {
-            LanguagesEnumClass enumObject = new LanguagesEnumClass();
-            string targetLang = enumObject.GetType().GetField(targetLanguage).GetValue(enumObject).ToString();
-
             //Yandex automatically detects language from given text.
             Translator translateObject = new Translator();
-            string result = translateObject.TranslateText(text, targetLang);
+            string result = translateObject.TranslateText(text, language);
 
             return result;
         }
 
-        public string TranslateText(string text, string lang)
+        public string TranslateText(string text, Language language)
         {
             using (var wb = new WebClient())
             {
                 var reqData = new NameValueCollection();
                 reqData["text"] = text; // text to translate
-                reqData["lang"] = lang; // target language
+                reqData["lang"] = language.ToString(); // target language
                 reqData["key"] = "API-Key Here";
 
                 try
@@ -44,7 +41,7 @@ namespace Translator
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("ERROR!!! " + ex.Message);
+                    Debug.LogError("ERROR!!! " + ex.Message);
                     throw;
                 }
 
@@ -57,7 +54,6 @@ namespace Translator
 
     }
 
-    [Serializable]
     class Translation
     {
         public int code { get; set; }
