@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using PrimeTech.Core;
 
-namespace Translator
+namespace PrimeTech.Translator
 {
     //TODO - Compare to Google API
     public class Translator : MonoBehaviour
