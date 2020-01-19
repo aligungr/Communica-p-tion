@@ -6,7 +6,7 @@ namespace PrimeTech.SpeechRecognizer {
 
     public class RecognitionListenerProxy : AndroidJavaProxy {
 
-        public RecognitionListenerProxy() : base("android.speech.recognitionlistener") {
+        public RecognitionListenerProxy() : base("android.speech.RecognitionListener") {
 
         }
 

@@ -14,7 +14,7 @@ namespace PrimeTech.SpeechRecognizer {
         private static AndroidJavaObject speechRecognizerInstance;
         private static bool constructed;
 
-        public static void Construct() {
+        public static void Construct(RecognitionListenerProxy listenerProxy) {
             AndroidUtils.RunOnUiThread(() => {
                 activityContext = AndroidUtils.GetActivityContext();
                 speechRecognizerClass = new AndroidJavaClass("android.speech.SpeechRecognizer");
@@ -34,12 +34,31 @@ namespace PrimeTech.SpeechRecognizer {
                     return;
                 }
 
+                speechRecognizerInstance.Call("setRecognitionListener", listenerProxy);
+
                 UnityLooper.Enqueue(() => {
                     Debug.Log("android speech recognizer constructed");
                 });
 
                 constructed = true;
             });
+        }
+
+        public static void StartListening() {
+            var intent = createIntent();
+
+            AndroidUtils.RunOnUiThread(() => {
+                speechRecognizerInstance.Call("startListening", intent);
+            });
+        }
+
+        private static AndroidJavaObject createIntent() {
+            var intent = new AndroidJavaObject("android.content.Intent", "android.speech.action.RECOGNIZE_SPEECH");
+            intent.Call<AndroidJavaObject>("putExtra", "calling_package", "com.primetech.communication");
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", true);
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE_MODEL", "free_form");
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.MAX_RESULTS", 10);
+            return intent;
         }
     }
 }
