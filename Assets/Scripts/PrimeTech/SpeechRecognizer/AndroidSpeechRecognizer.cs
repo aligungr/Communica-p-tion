@@ -3,29 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PrimeTech.Core;
 using UnityEngine;
 
 namespace PrimeTech.SpeechRecognizer {
 
-    public class AndroidSpeechRecognizer {
-        private readonly AndroidJavaObject activityContext;
-        private readonly AndroidJavaClass speechRecognizerClass;
-        private readonly AndroidJavaObject speechRecognizerInstance;
+    public static class AndroidSpeechRecognizer {
+        private static AndroidJavaObject activityContext;
+        private static AndroidJavaClass speechRecognizerClass;
+        private static AndroidJavaObject speechRecognizerInstance;
+        private static bool constructed;
 
-        public AndroidSpeechRecognizer() {
-            this.activityContext = AndroidUtils.GetActivityContext();
-            this.speechRecognizerClass = new AndroidJavaClass("android.speech.SpeechRecognizer");
+        public static void Construct() {
+            AndroidUtils.RunOnUiThread(() => {
+                activityContext = AndroidUtils.GetActivityContext();
+                speechRecognizerClass = new AndroidJavaClass("android.speech.SpeechRecognizer");
 
-            if (!this.speechRecognizerClass.CallStatic<bool>("isRecognitionAvailable", activityContext)) {
-                throw new Exception("AndroidSpeechRecognizer: Recognition is not available");
-            }
+                if (!speechRecognizerClass.CallStatic<bool>("isRecognitionAvailable", activityContext)) {
+                    UnityLooper.Enqueue(() => {
+                        Debug.LogError("AndroidSpeechRecognizer: Recognition is not available");
+                    });
+                    return;
+                }
 
-            this.speechRecognizerInstance = this.speechRecognizerClass.CallStatic<AndroidJavaClass>("createSpeechRecognizer", activityContext);
-            if (this.speechRecognizerInstance == null) {
-                throw new Exception("AndroidSpeechRecognizer: Recognition is not available");
-            }
+                speechRecognizerInstance = speechRecognizerClass.CallStatic<AndroidJavaObject>("createSpeechRecognizer", activityContext);
+                if (speechRecognizerInstance == null) {
+                    UnityLooper.Enqueue(() => {
+                        Debug.LogError("AndroidSpeechRecognizer: Recognition is not available");
+                    });
+                    return;
+                }
 
-            Debug.Log("android speech recognizer constructed");
+                UnityLooper.Enqueue(() => {
+                    Debug.Log("android speech recognizer constructed");
+                });
+
+                constructed = true;
+            });
         }
     }
 }

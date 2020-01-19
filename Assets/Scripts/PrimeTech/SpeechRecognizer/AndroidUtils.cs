@@ -14,5 +14,9 @@ namespace PrimeTech.SpeechRecognizer {
             var jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
             return jo;
         }
+
+        public static void RunOnUiThread(AndroidJavaRunnable runnable) {
+            GetActivityContext().Call("runOnUiThread", new AndroidJavaRunnable(runnable));
+        }
     }
 }
