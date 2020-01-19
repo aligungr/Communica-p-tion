@@ -14,27 +14,27 @@ namespace PrimeTech.Core
 
         public void OnModeChange()
         {
-            if (mode.value == 0)
-                Debug.Log("mode value is NONE");
-            else if (mode.value == 1)
-                Debug.Log("mode value is TEXT DETECTION");
+            if (mode.options[mode.value].text.Equals("Speech To Text"))
+                Debug.Log("mode value is Speech To Text");
+            else if (mode.options[mode.value].text.Equals("Text Detection"))
+                Debug.Log("mode value is Speech To Text Detection");
             else
-                Debug.Log("mode value is SPEECH TO TEXT");
+                Debug.Log("mode value is None");
         }
 
         public void OnFaceDetectionChange()
         {
-            if (faceDetection.value == 0)
+            if (faceDetection.options[faceDetection.value].text.Equals("OFF"))
                 Debug.Log("faceDetection value is OFF");
-            else if (faceDetection.value == 1)
+            else
                 Debug.Log("faceDetection value is ON");
         }
 
         public void OnTranslateLanguageChange()
         {
-            if (translateLanguage.value == 0)
+            if (translateLanguage.options[translateLanguage.value].text.Equals("OFF"))
                 Debug.Log("translateLanguage value is OFF");
-            else if (translateLanguage.value == 1)
+            else
                 Debug.Log("translateLanguage value is ON");
         }
 
@@ -45,9 +45,9 @@ namespace PrimeTech.Core
 
         public void SaveSettings()
         {
-            PlayerPrefs.SetInt("mode", mode.value);
-            PlayerPrefs.SetInt("faceDetection", faceDetection.value);
-            PlayerPrefs.SetInt("translateLanguage", translateLanguage.value);
+            SettingsManager.SetMode(mode.value);
+            SettingsManager.SetFaceDetection(faceDetection.value);
+            SettingsManager.SetTranslateLanguage(translateLanguage.value);
         }
 
         void Start()
@@ -56,6 +56,10 @@ namespace PrimeTech.Core
             faceDetection.onValueChanged.AddListener(delegate { OnFaceDetectionChange(); });
             translateLanguage.onValueChanged.AddListener(delegate { OnTranslateLanguageChange(); });
             apply.onClick.AddListener(delegate { OnClickApplyButton(); });
+
+            mode.value = SettingsManager.GetMode();
+            faceDetection.value = SettingsManager.GetFaceDetection();
+            translateLanguage.value = SettingsManager.GetTranslateLanguage();
 
         }
 
