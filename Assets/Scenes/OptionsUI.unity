@@ -582,7 +582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: {fileID: 1513751012}
-  faceDetection: {fileID: 1438528457}
+  subtitleTrigger: {fileID: 0}
   translateLanguage: {fileID: 526841126}
   apply: {fileID: 972893731}
 --- !u!224 &229906163
