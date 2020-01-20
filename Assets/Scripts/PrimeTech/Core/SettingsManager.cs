@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using static PrimeTech.Core.SettingsManagerController;
+
 namespace PrimeTech.Core
 {
-    public class SettingsManager : MonoBehaviour
+    public static class SettingsManager
     {
-        public static void SetMode(int mode)
+        public static void SetMode(Modes mode)
         {
-            PlayerPrefs.SetInt("mode", mode);
+            PlayerPrefs.SetInt("mode", (int)mode);
         }
 
         public static int GetMode()
@@ -16,19 +15,19 @@ namespace PrimeTech.Core
             return PlayerPrefs.GetInt("mode");
         }
 
-        public static void SetFaceDetection(int faceDetection)
+        public static void SetFaceDetection(SubtitleTrigger faceDetection)
         {
-            PlayerPrefs.SetInt("faceDetection", faceDetection);
+            PlayerPrefs.SetInt("subtitleTrigger", (int)faceDetection);
         }
 
         public static int GetFaceDetection()
         {
-            return PlayerPrefs.GetInt("faceDetection");
+            return PlayerPrefs.GetInt("subtitleTrigger");
         }
 
-        public static void SetTranslateLanguage(int translateLanguage)
+        public static void SetTranslateLanguage(TranslateLanguage translateLanguage)
         {
-            PlayerPrefs.SetInt("translateLanguage", translateLanguage);
+            PlayerPrefs.SetInt("translateLanguage", (int)translateLanguage);
         }
 
         public static int GetTranslateLanguage()
