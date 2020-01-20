@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static PrimeTech.Core.SettingsManagerController;
 
 namespace PrimeTech.Core
 {
@@ -10,19 +9,19 @@ namespace PrimeTech.Core
             PlayerPrefs.SetInt("mode", (int)mode);
         }
 
-        public static int GetMode()
+        public static Modes GetMode()
         {
-            return PlayerPrefs.GetInt("mode");
+            return (Modes) PlayerPrefs.GetInt("mode");
         }
 
-        public static void SetFaceDetection(SubtitleTrigger faceDetection)
+        public static void SetSubtitleTrigger(SubtitleTrigger subtitleTrigger)
         {
-            PlayerPrefs.SetInt("subtitleTrigger", (int)faceDetection);
+            PlayerPrefs.SetInt("subtitleTrigger", (int)subtitleTrigger);
         }
 
-        public static int GetFaceDetection()
+        public static SubtitleTrigger GetSubtitleTrigger()
         {
-            return PlayerPrefs.GetInt("subtitleTrigger");
+            return (SubtitleTrigger)PlayerPrefs.GetInt("subtitleTrigger");
         }
 
         public static void SetTranslateLanguage(TranslateLanguage translateLanguage)
@@ -30,9 +29,9 @@ namespace PrimeTech.Core
             PlayerPrefs.SetInt("translateLanguage", (int)translateLanguage);
         }
 
-        public static int GetTranslateLanguage()
+        public static TranslateLanguage GetTranslateLanguage()
         {
-            return PlayerPrefs.GetInt("translateLanguage");
+            return (TranslateLanguage)PlayerPrefs.GetInt("translateLanguage");
         }
 
     }

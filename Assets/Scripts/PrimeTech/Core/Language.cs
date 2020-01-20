@@ -61,11 +61,13 @@
 
         private readonly string code;
 
-        private Language(string code) {
+        private Language(string code)
+        {
             this.code = code;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return this.code;
         }
     }

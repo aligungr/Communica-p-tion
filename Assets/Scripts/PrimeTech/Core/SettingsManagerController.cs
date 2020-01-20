@@ -10,26 +10,6 @@ namespace PrimeTech.Core
         public Dropdown translateLanguage;
         public Button apply;
 
-        public enum Modes
-        {
-            SpeechToText,
-            TextDetection,
-            None
-        };
-
-        public enum SubtitleTrigger
-        {
-            AlwaysOn,
-            IfFaceDetected,
-            ManuallyTriggered
-        };
-
-        public enum TranslateLanguage
-        {
-            ON,
-            OFF
-        };
-
         public void OnModeChange()
         {
             if (mode.value == 0)
@@ -40,7 +20,7 @@ namespace PrimeTech.Core
                 Debug.Log("mode value is None");
         }
 
-        public void OnFaceDetectionChange()
+        public void OnSubtitleTriggerChange()
         {
             if (subtitleTrigger.value == 0)
                 Debug.Log("subtitleTrigger value is Always On");
@@ -66,20 +46,20 @@ namespace PrimeTech.Core
         public void SaveSettings()
         {
             SettingsManager.SetMode((Modes)mode.value);
-            SettingsManager.SetFaceDetection((SubtitleTrigger)subtitleTrigger.value);
+            SettingsManager.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsManager.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
         }
 
         void Start()
         {
             mode.onValueChanged.AddListener(delegate { OnModeChange(); });
-            subtitleTrigger.onValueChanged.AddListener(delegate { OnFaceDetectionChange(); });
+            subtitleTrigger.onValueChanged.AddListener(delegate { OnSubtitleTriggerChange(); });
             translateLanguage.onValueChanged.AddListener(delegate { OnTranslateLanguageChange(); });
             apply.onClick.AddListener(delegate { OnClickApplyButton(); });
 
-            mode.value = SettingsManager.GetMode();
-            subtitleTrigger.value = SettingsManager.GetFaceDetection();
-            translateLanguage.value = SettingsManager.GetTranslateLanguage();
+            mode.value = (int)SettingsManager.GetMode();
+            subtitleTrigger.value = (int)SettingsManager.GetSubtitleTrigger();
+            translateLanguage.value = (int)SettingsManager.GetTranslateLanguage();
 
         }
     }
