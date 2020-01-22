@@ -1,4 +1,9 @@
-﻿namespace PrimeTech.Core
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
+
+namespace PrimeTech.Core
 {
     public class Language
     {
@@ -100,15 +105,28 @@
         public static readonly Language Xhosa = new Language("xh");
         public static readonly Language Yiddish = new Language("yi");
         public static readonly Language Welsh = new Language("cy");
+        private static List<Language> allLanguages = null;
 
         private readonly string code;
 
-        private Language(string code) {
+        private Language(string code)
+        {
             this.code = code;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return this.code;
         }
+
+        public static List<Language> GetAllLanguages()
+        {
+            if (allLanguages == null)
+            {
+                allLanguages = typeof(Language).GetFields(BindingFlags.Public | BindingFlags.Static).Select(x => (Language)x.GetValue(null)).ToList();
+            }
+            return allLanguages;
+        }
+
     }
 }
