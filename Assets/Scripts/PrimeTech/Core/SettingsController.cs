@@ -11,7 +11,7 @@ namespace PrimeTech.Core
 
         public static Modes GetMode()
         {
-            return (Modes) PlayerPrefs.GetInt("mode");
+            return (Modes) PlayerPrefs.GetInt("mode",(int)Modes.None);
         }
 
         public static void SetSubtitleTrigger(SubtitleTrigger subtitleTrigger)
@@ -21,7 +21,7 @@ namespace PrimeTech.Core
 
         public static SubtitleTrigger GetSubtitleTrigger()
         {
-            return (SubtitleTrigger)PlayerPrefs.GetInt("subtitleTrigger");
+            return (SubtitleTrigger)PlayerPrefs.GetInt("subtitleTrigger", (int)SubtitleTrigger.AlwaysOn);
         }
 
         public static void SetTranslateLanguage(TranslateLanguage translateLanguage)
@@ -31,9 +31,18 @@ namespace PrimeTech.Core
 
         public static TranslateLanguage GetTranslateLanguage()
         {
-            return (TranslateLanguage)PlayerPrefs.GetInt("translateLanguage");
+            return (TranslateLanguage)PlayerPrefs.GetInt("translateLanguage",(int)TranslateLanguage.OFF);
         }
 
+        public static void SetLanguage(Language language)
+        {
+            PlayerPrefs.SetInt("language", Language.GetAllLanguages().IndexOf(language));
+        }
+
+        public static Language GetLanguage()
+        {
+            return  Language.GetAllLanguages()[PlayerPrefs.GetInt("language", Language.GetAllLanguages().IndexOf(Language.Turkish))];
+        }
     }
 
 }

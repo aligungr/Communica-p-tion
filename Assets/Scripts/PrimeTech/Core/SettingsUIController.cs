@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace PrimeTech.Core
 {
@@ -8,6 +10,7 @@ namespace PrimeTech.Core
         public Dropdown mode;
         public Dropdown subtitleTrigger;
         public Dropdown translateLanguage;
+        public Dropdown language;
         public Button apply;
 
         public void OnModeChange()
@@ -38,6 +41,15 @@ namespace PrimeTech.Core
                 Debug.Log("translateLanguage value is OFF");
         }
 
+        public void OnLanguagesChange()
+        {
+            if(language.value == 0)
+                Debug.Log("languages value is Turkish");
+            else
+                Debug.Log("languages value is NOT Turkish");
+
+        }
+
         public void OnClickApplyButton()
         {
             SaveSettings();
@@ -48,6 +60,7 @@ namespace PrimeTech.Core
             SettingsController.SetMode((Modes)mode.value);
             SettingsController.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsController.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
+            SettingsController.SetLanguage(Language.GetAllLanguages()[language.value]);
         }
 
         void Start()
@@ -60,6 +73,7 @@ namespace PrimeTech.Core
             mode.value = (int)SettingsController.GetMode();
             subtitleTrigger.value = (int)SettingsController.GetSubtitleTrigger();
             translateLanguage.value = (int)SettingsController.GetTranslateLanguage();
+            language.value = Language.GetAllLanguages().IndexOf(SettingsController.GetLanguage());
         }
     }
 
