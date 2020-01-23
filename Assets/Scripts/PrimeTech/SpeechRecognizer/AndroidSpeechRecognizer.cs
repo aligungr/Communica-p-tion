@@ -14,7 +14,8 @@ namespace PrimeTech.SpeechRecognizer {
         private static AndroidJavaObject speechRecognizerInstance;
         private static bool constructed;
 
-        public static void Construct(RecognitionListenerProxy listenerProxy) {
+        public static void Construct(BaseRecognitionListenerProxy listenerProxy) {
+#if !UNITY_EDITOR
             AndroidUtils.RunOnUiThread(() => {
                 activityContext = AndroidUtils.GetActivityContext();
                 speechRecognizerClass = new AndroidJavaClass("android.speech.SpeechRecognizer");
@@ -42,22 +43,33 @@ namespace PrimeTech.SpeechRecognizer {
 
                 constructed = true;
             });
+#else
+            Debug.Log("skipping initialization of Android Speech Recognizer on Editor");
+#endif
         }
 
         public static void StartListening() {
-            var intent = createIntent();
+#if !UNITY_EDITOR
+            var intent = CreateIntent();
 
             AndroidUtils.RunOnUiThread(() => {
                 speechRecognizerInstance.Call("startListening", intent);
             });
+#else
+            Debug.Log("start listening is ignored on Editor");
+#endif
         }
 
-        private static AndroidJavaObject createIntent() {
+        private static AndroidJavaObject CreateIntent() {
             var intent = new AndroidJavaObject("android.content.Intent", "android.speech.action.RECOGNIZE_SPEECH");
             intent.Call<AndroidJavaObject>("putExtra", "calling_package", "com.primetech.communication");
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", true);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE_MODEL", "free_form");
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.MAX_RESULTS", 10);
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.ONLY_RETURN_LANGUAGE_PREFERENCE", false);
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PREFER_OFFLINE", false);
+            //intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE", "tr_TR");
+            
             return intent;
         }
     }

@@ -21,9 +21,6 @@ namespace PrimeTech.Core {
         private void Start() {
             // Write your startup codes here
 
-            AndroidSpeechRecognizer.Construct(new RecognitionListenerProxy());
-            AndroidSpeechRecognizer.StartListening();
-          
         }
     }
 }
