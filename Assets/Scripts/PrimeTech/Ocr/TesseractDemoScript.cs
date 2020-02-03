@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 
 public class TesseractDemoScript : MonoBehaviour {
-	private Texture2D texture;
+	public Texture2D texture;
 	public  Text text;
 	public CameraScript cam = new CameraScript();
 	public TesseractWrapper_And tesseract = new TesseractWrapper_And ();
@@ -37,26 +37,26 @@ public class TesseractDemoScript : MonoBehaviour {
 		string datapath = System.IO.Path.Combine (Application.persistentDataPath, "tessdata");
 		tesseract.Init ("eng", datapath);
 
-		//string result = tesseract.RecognizeFromTexture (texture, false);
-
-		//text.text = result ?? "Error: " + tesseract.errorMsg;
+		string result = tesseract.RecognizeFromTexture (texture, false);
+       
+		text.text = result ?? "Error: " + tesseract.errorMsg;
 	}
     private void OnGUI()
     {
-		if (GUI.Button(new Rect(180, 180, 90, 90), "Click"))
-		{
-			texture = cam.TakeSnapshot();
-			string result = tesseract.RecognizeFromTexture(texture, false);
-			if (result == null)
-				text.text = "Text bulunamadı.";
+        if (GUI.Button(new Rect(180, 180, 90, 90), "Click"))
+        {
+            texture = cam.TakeSnapshot();
+            string result = tesseract.RecognizeFromTexture(texture, false);
+            if (result == null)
+                text.text = "Text bulunamadı.";
 
-			else
-				text.text = result;
-			Debug.Log(result);
-		}   
-	}
-    void CopyFile(string folder, string file) {
-		string fileUrl = System.IO.Path.Combine (Application.streamingAssetsPath, folder + file);
+            else
+                text.text = result;
+        }
+    }
+    void CopyFile(string folder, string file)
+    {
+        string fileUrl = System.IO.Path.Combine (Application.streamingAssetsPath, folder + file);
 		string fileDirectory = System.IO.Path.Combine (Application.persistentDataPath, folder);
 		string filePath = System.IO.Path.Combine (fileDirectory, file);
 		Debug.Log("Copying: " + fileUrl);

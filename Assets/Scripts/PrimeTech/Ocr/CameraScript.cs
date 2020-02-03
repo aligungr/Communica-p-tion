@@ -7,6 +7,7 @@ using System.IO;
 public class CameraScript : MonoBehaviour
 {
     static WebCamTexture backCam;
+    int capture_count=0;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,12 +31,13 @@ public class CameraScript : MonoBehaviour
     public Texture2D TakeSnapshot()
     {
         Texture2D snap = new Texture2D(backCam.width, backCam.height);
-        //snap.SetPixels(backCam.GetPixels());
-        //snap.Apply();
+        snap.SetPixels(backCam.GetPixels());
+        snap.Apply();
         if (backCam.isPlaying)
             backCam.Pause();
-
-       return snap;
+        File.WriteAllBytes("/Users/apple/Desktop/Communica-p-tion/" + capture_count.ToString()+ ".png", snap.EncodeToPNG());
+        ++capture_count;
+        return snap;
 
     }
 
