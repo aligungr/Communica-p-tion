@@ -36,15 +36,23 @@ namespace PrimeTech.Core
        
         public void OnModeChange()
         {
-            if (mode.value == 2 || mode.value == 1)
+            if (mode.value == 1)
             {
                 subtitleTrigger.interactable = false;
                 translateLanguage.interactable = false;
+                language.interactable = true;
+            }
+            else if(mode.value == 2)
+            {
+                subtitleTrigger.interactable = false;
+                translateLanguage.interactable = false;
+                language.interactable = false;
             }
             else
             {
                 subtitleTrigger.interactable = true;
                 translateLanguage.interactable = true;
+                language.interactable = true;
             }
         }
 
