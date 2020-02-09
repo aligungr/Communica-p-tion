@@ -9,10 +9,6 @@ namespace PrimeTech.Core
 {
     public class SettingsUIController : MonoBehaviour
     {
-        [Header("Health Settings")]
-        public int health = 0;
-        public int maxHealth = 100;
-
         public Dropdown mode;
         public Dropdown language;
         public Dropdown subtitleTrigger;
@@ -90,6 +86,7 @@ namespace PrimeTech.Core
             SettingsController.SetLanguage(Language.GetAllLanguages()[language.value]);
             SettingsController.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsController.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
+            Application.Quit();
         }
 
         void Start()
@@ -109,6 +106,17 @@ namespace PrimeTech.Core
             language.value = Language.GetAllLanguages().IndexOf(SettingsController.GetLanguage());
             subtitleTrigger.value = (int)SettingsController.GetSubtitleTrigger();
             translateLanguage.value = (int)SettingsController.GetTranslateLanguage();
+        }
+
+        void Update()
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Application.Quit();
+                }
+            }
         }
     }
 
