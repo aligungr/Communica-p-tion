@@ -12,7 +12,7 @@ namespace PrimeTech.Translator
     //TODO - Compare to Google API
     public class Translator : MonoBehaviour
     {
-        
+
         public string Translate(string text, Language language)
         {
             //Yandex automatically detects language from given text.
