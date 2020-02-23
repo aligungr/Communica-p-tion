@@ -3628,6 +3628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode: {fileID: 1048943242}
   language: {fileID: 1513751012}
+  foreignLanguage: {fileID: 1618156614}
   subtitleTrigger: {fileID: 526841126}
   translateLanguage: {fileID: 1746617119}
   apply: {fileID: 972893731}

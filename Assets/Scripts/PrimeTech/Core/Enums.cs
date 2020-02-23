@@ -4,7 +4,6 @@
     {
         SpeechToText,
         TextDetection,
-        None
     };
 
     public enum SubtitleTrigger
