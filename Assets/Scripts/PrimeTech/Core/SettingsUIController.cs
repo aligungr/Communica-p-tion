@@ -76,7 +76,7 @@ namespace PrimeTech.Core
 
         public void OnForeignLanguagesChange()
         {
-            if (language.value == 0)
+            if (foreignLanguage.value == 0)
                 Debug.Log("languages value is Turkish");
             else
                 Debug.Log("languages value is NOT Turkish");
@@ -126,6 +126,7 @@ namespace PrimeTech.Core
 
             mode.onValueChanged.AddListener(delegate { OnModeChange(); });
             language.onValueChanged.AddListener(delegate { OnLanguagesChange(); });
+            foreignLanguage.onValueChanged.AddListener(delegate { OnForeignLanguagesChange(); });
             subtitleTrigger.onValueChanged.AddListener(delegate { OnSubtitleTriggerChange(); });
             translateLanguage.onValueChanged.AddListener(delegate { OnTranslateLanguageChange(); });
             apply.onClick.AddListener(delegate { OnClickApplyButton(); });
