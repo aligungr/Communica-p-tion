@@ -9,8 +9,8 @@
     public enum SubtitleTrigger
     {
         AlwaysOn,
+        ManuallyTriggered,
         IfFaceDetected,
-        ManuallyTriggered
     };
 
     public enum TranslateLanguage
