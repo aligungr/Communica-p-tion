@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace PrimeTech.Core
 {
@@ -116,7 +117,8 @@ namespace PrimeTech.Core
             SettingsController.SetForeignLanguage(Language.GetAllLanguages()[foreignLanguage.value]);
             SettingsController.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsController.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
-            Application.Quit();
+            SceneManager.LoadScene("MainScreenUI");
+            //Application.Quit();
         }
 
         void Start()
