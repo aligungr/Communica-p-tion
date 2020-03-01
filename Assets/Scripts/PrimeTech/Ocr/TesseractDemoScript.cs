@@ -17,7 +17,7 @@ public class TesseractDemoScript : MonoBehaviour
 
         _tesseractDriver = new TesseractDriver();
         Recognize(texture);
-        //SetImageDisplay();
+        SetImageDisplay();
     }
 
     private void Recognize(Texture2D outputTexture)
