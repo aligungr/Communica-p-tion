@@ -3,9 +3,10 @@ using UnityEngine.UI;
 
 public class TesseractDemoScript : MonoBehaviour
 {
-    [SerializeField] public Texture2D imageToRecognize;
+    public Texture2D imageToRecognize;
     [SerializeField] public Text displayText;
     [SerializeField] public RawImage outputImage;
+    public CameraScript cam;
     private TesseractDriver _tesseractDriver;
     private string _text = "";
 
@@ -14,10 +15,30 @@ public class TesseractDemoScript : MonoBehaviour
         Texture2D texture = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
         texture.SetPixels32(imageToRecognize.GetPixels32());
         texture.Apply();
+        cam = new CameraScript();
 
         _tesseractDriver = new TesseractDriver();
-        Recognize(texture);
-        SetImageDisplay();
+        //Recognize(texture);
+        //SetImageDisplay();
+    }
+    private void OnGUI()
+    {
+        
+
+        _tesseractDriver = new TesseractDriver();
+        if (GUI.Button(new Rect(180, 180, 90, 90), "Click"))
+        {
+            imageToRecognize = cam.TakeSnapshot();
+            Texture2D texture2 = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
+            texture2.SetPixels32(imageToRecognize.GetPixels32());
+            texture2.Apply();
+            if (imageToRecognize != null)
+            {
+                Recognize(texture2);
+                SetImageDisplay();
+
+            }
+        }
     }
 
     private void Recognize(Texture2D outputTexture)
