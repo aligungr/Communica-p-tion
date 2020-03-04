@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using PrimeTech.Core;
+using PrimeTech.Translator;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainScreenUIController : MonoBehaviour
@@ -11,20 +15,19 @@ public class MainScreenUIController : MonoBehaviour
 
     public RawImage display;
     public Text startStopText;
+    public AspectRatioFitter fit;
+    WebCamDevice device;
 
-    public void SwapCamClicked()
+    public Text text;
+
+    private void Awake()
     {
-        if (WebCamTexture.devices.Length > 0)
-        {
-            currentCamIndex += 1;
-            currentCamIndex %= WebCamTexture.devices.Length;
+        this.text = GetComponent<Text>();
+    }
 
-            if(tex != null)
-            {
-                StopWebCam();
-                StartStopCamClicked();
-            }
-        }
+    public void SettingsClicked()
+    {
+        SceneManager.LoadScene("OptionsUI");
     }
 
     public void StartStopCamClicked()
@@ -36,9 +39,12 @@ public class MainScreenUIController : MonoBehaviour
         }
         else
         {
-            WebCamDevice device = WebCamTexture.devices[currentCamIndex];
+            device = WebCamTexture.devices[currentCamIndex];
             tex = new WebCamTexture(device.name);
-            display.texture = tex; 
+            display.texture = tex;
+            
+            float ratio = tex.width / tex.height;
+            fit.aspectRatio = ratio;
 
             float antiRotate = -(270 - tex.videoRotationAngle) + 180;
  
@@ -63,12 +69,11 @@ public class MainScreenUIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartStopCamClicked();
     }
 
     // Update is called once per frame
     void Update()
     {
-      
     }
 }

@@ -61,14 +61,15 @@ namespace PrimeTech.SpeechRecognizer {
         }
 
         private static AndroidJavaObject CreateIntent() {
+            Language foreignLanguage = SettingsController.GetForeignLanguage();
             var intent = new AndroidJavaObject("android.content.Intent", "android.speech.action.RECOGNIZE_SPEECH");
             intent.Call<AndroidJavaObject>("putExtra", "calling_package", "com.primetech.communication");
-            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", true);
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", false);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE_MODEL", "free_form");
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.MAX_RESULTS", 10);
-            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.ONLY_RETURN_LANGUAGE_PREFERENCE", false);
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.ONLY_RETURN_LANGUAGE_PREFERENCE", true);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PREFER_OFFLINE", false);
-            //intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE", "tr_TR");
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE", foreignLanguage.ToString());
             
             return intent;
         }
