@@ -7,8 +7,6 @@ using System.IO;
 public class CameraScript : MonoBehaviour
 {
     static WebCamTexture backCam;
-    WaitForEndOfFrame frameEnd = new WaitForEndOfFrame();
-    int capture_count = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,8 +33,7 @@ public class CameraScript : MonoBehaviour
             //Debug.Log("Permission result: " + NativeGallery.SaveImageToGallery(snap, Application.productName + " Captures", "Capt_" + capture_count));
 
 
-        }
-        ++capture_count;
+        }        
         return snap;
 
     }

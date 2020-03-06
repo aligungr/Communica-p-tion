@@ -7,6 +7,7 @@ public class TesseractDemoScript : MonoBehaviour
     [SerializeField] public Text displayText;
     [SerializeField] public RawImage outputImage;
     public CameraScript cam;
+    public CameraRealTime cam2;
     private TesseractDriver _tesseractDriver;
     private string _text = "";
 
@@ -16,8 +17,14 @@ public class TesseractDemoScript : MonoBehaviour
         texture.SetPixels32(imageToRecognize.GetPixels32());
         texture.Apply();
         cam = new CameraScript();
-
+        cam2 = new CameraRealTime();
         _tesseractDriver = new TesseractDriver();
+        if (cam2.GetOutput()!= null)
+        {
+            Recognize(cam2.GetOutput());
+            SetImageDisplay();
+        }
+            
         //Recognize(texture);
         //SetImageDisplay();
     }
@@ -26,19 +33,19 @@ public class TesseractDemoScript : MonoBehaviour
         
 
         _tesseractDriver = new TesseractDriver();
-        if (GUI.Button(new Rect(180, 180, 90, 90), "Click"))
-        {
-            imageToRecognize = cam.TakeSnapshot();
-            Texture2D texture2 = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
-            texture2.SetPixels32(imageToRecognize.GetPixels32());
-            texture2.Apply();
-            if (imageToRecognize != null)
-            {
-                Recognize(texture2);
-                SetImageDisplay();
+        //if (GUI.Button(new Rect(180, 180, 90, 90), "Click"))
+        //{
+        //    imageToRecognize = cam.TakeSnapshot();
+        //    Texture2D texture2 = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
+        //    texture2.SetPixels32(imageToRecognize.GetPixels32());
+        //    texture2.Apply();
+        //    if (imageToRecognize != null)
+        //    {
+        //        //Recognize(texture2);
+        //        //SetImageDisplay();
 
-            }
-        }
+        //    }
+        //}
     }
 
     private void Recognize(Texture2D outputTexture)
