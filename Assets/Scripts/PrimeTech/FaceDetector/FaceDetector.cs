@@ -10,7 +10,7 @@ public class FaceDetector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
-        CascadeClassifier Classifier = new CascadeClassifier(Path.Combine(Application.dataPath, "Cascades//haarcascade_frontalface_default.xml"));
+        /*CascadeClassifier Classifier = new CascadeClassifier(Path.Combine(Application.dataPath, "Cascades//haarcascade_frontalface_default.xml"));
         System.Drawing.Bitmap img = new System.Drawing.Bitmap(Path.Combine(Application.dataPath, "ExampleImages//ex_5.jpg"));
         Image<Bgr, byte> picture = new Image<Bgr, byte>(img);
         System.Drawing.Rectangle[] rectangles = Classifier.DetectMultiScale(picture, 1.4, 0);
@@ -25,7 +25,7 @@ public class FaceDetector : MonoBehaviour
             }
             Debug.Log(string.Format("lu: {0}, {1} ru: {2}, {3} ld: {4}, {5} rd: {6}, {7}", rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top, rectangle.Left, rectangle.Bottom, rectangle.Right, rectangle.Bottom));
         }
-        img.Save("C:\\Users\\User\\Desktop\\ex_5_v2.jpg");
+        img.Save("C:\\Users\\User\\Desktop\\ex_5_v2.jpg");*/
     }
 
     // Update is called once per frame

@@ -32,12 +32,12 @@ public class WebcamFaceDetector : MonoBehaviour
         if (time >= interpolationPeriod)
         {
             time = 0.0f;
-            faceDetection();
+            //faceDetection();
         }
     }
 
 
-    void faceDetection()
+    /*void faceDetection()
     {
         Texture2D snap = new Texture2D(wct.width, wct.height);
         snap.SetPixels(wct.GetPixels());
@@ -66,6 +66,6 @@ public class WebcamFaceDetector : MonoBehaviour
         img.Save(stream, img.RawFormat);
         snap.LoadImage(stream.ToArray());
         GetComponent<Renderer>().material.mainTexture = snap;
-    }
+    }*/
 
 }
