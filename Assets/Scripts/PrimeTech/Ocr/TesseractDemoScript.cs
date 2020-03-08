@@ -1,61 +1,139 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TesseractDemoScript : MonoBehaviour
 {
-    public Texture2D imageToRecognize;
-    [SerializeField] public Text displayText;
-    [SerializeField] public RawImage outputImage;
-    public CameraScript cam;
-    public CameraRealTime cam2;
+    [SerializeField] private Texture2D imageToRecognize;
+    [SerializeField] private Text displayText;
+    [SerializeField] private RawImage outputImage;
     private TesseractDriver _tesseractDriver;
     private string _text = "";
 
+
+    int currentCamIndex = 0;
+
+    WebCamTexture tex;
+
+    public RawImage display;
+    public AspectRatioFitter fit;
+    WebCamDevice device;
+
+    private Texture2D output;
+    public Color[] data;
+
+    public event Action OnSingleTap;
+    public event Action OnDoubleTap;
+    [Tooltip("Defines the maximum time between two taps to make it double tap")]
+    [SerializeField] private float tapThreshold = 0.25f;
+    private Action updateDelegate;
+    private float tapTimer = 0.0f;
+    private bool tap = false;
+    private bool disableCaptureOnUpdate;
+
+    private void Awake()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        updateDelegate = UpdateEditor;
+#elif UNITY_IOS || UNITY_ANDROID
+        updateDelegate = UpdateMobile;
+#endif
+        OnDoubleTap = doubleClickCaptured;
+    }
+
+
+
+    private void OnDestroy()
+    {
+        OnSingleTap = null;
+        OnDoubleTap = null;
+    }
+
     private void Start()
     {
+        StartCamera();
+
         Texture2D texture = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
         texture.SetPixels32(imageToRecognize.GetPixels32());
         texture.Apply();
-        cam = new CameraScript();
-        cam2 = new CameraRealTime();
+
         _tesseractDriver = new TesseractDriver();
-        if (cam2.GetOutput()!= null)
-        {
-            Recognize(cam2.GetOutput());
-            SetImageDisplay();
-        }
-            
-        //Recognize(texture);
-        //SetImageDisplay();
+        Recoginze(texture);
+        SetImageDisplay();
     }
-    private void OnGUI()
+
+
+    private void doubleClickCaptured()
     {
-        
+        if (!disableCaptureOnUpdate)
+            disableCaptureOnUpdate = true;
+        else
+            disableCaptureOnUpdate = false;
+        Color[] texData = tex.GetPixels();
+        Texture2D takenPhoto = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
+        takenPhoto.SetPixels(texData);
+        takenPhoto.Apply();
+        Recoginze(takenPhoto);
+        SetImageDisplay();
+        //byte[] picture = takenPhoto.EncodeToPNG();
 
-        _tesseractDriver = new TesseractDriver();
-        //if (GUI.Button(new Rect(180, 180, 90, 90), "Click"))
+        //if (data != null)
         //{
-        //    imageToRecognize = cam.TakeSnapshot();
-        //    Texture2D texture2 = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
-        //    texture2.SetPixels32(imageToRecognize.GetPixels32());
-        //    texture2.Apply();
-        //    if (imageToRecognize != null)
-        //    {
-        //        //Recognize(texture2);
-        //        //SetImageDisplay();
-
-        //    }
+        //    Color[] temp = tex.GetPixels();
+        //    // You can play around with data however you want here.
+        //    // Color32 has member variables of a, r, g, and b. You can read and write them however you want.
+        //    output.SetPixels(temp);
+        //    output.Apply();
+        //    Recoginze(output);
         //}
     }
 
-    private void Recognize(Texture2D outputTexture)
+    private void StartCamera()
+    {
+        if (tex != null)
+        {
+            StopWebCam();
+        }
+        else
+        {
+            device = WebCamTexture.devices[currentCamIndex];
+            tex = new WebCamTexture(device.name);
+            display.texture = tex;
+
+
+            float ratio = tex.width / tex.height;
+            fit.aspectRatio = ratio;
+
+            float antiRotate = -(270 - tex.videoRotationAngle) + 180;
+
+            Quaternion quatRot = new Quaternion();
+            quatRot.eulerAngles = new Vector3(0, 0, antiRotate);
+
+            display.transform.rotation = quatRot;
+
+            tex.Play();
+
+            output = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
+            //GetComponent<Renderer>().material.mainTexture = output;
+            data = new Color[tex.width * tex.height];
+            disableCaptureOnUpdate = true;
+        }
+    }
+
+    private void StopWebCam()
+    {
+        display.texture = null;
+        tex.Stop();
+        tex = null;
+    }
+
+    private void Recoginze(Texture2D outputTexture)
     {
         ClearTextDisplay();
         AddToTextDisplay(_tesseractDriver.CheckTessVersion());
         _tesseractDriver.Setup();
-        Debug.Log("Setup başarılı");
         AddToTextDisplay(_tesseractDriver.Recognize(outputTexture));
-        AddToTextDisplay(_tesseractDriver.GetErrorMessage(), true);
+        //AddToTextDisplay(_tesseractDriver.GetErrorMessage(), true);
     }
 
     private void ClearTextDisplay()
@@ -83,9 +161,70 @@ public class TesseractDemoScript : MonoBehaviour
     private void SetImageDisplay()
     {
         RectTransform rectTransform = outputImage.GetComponent<RectTransform>();
-        Debug.Log(rectTransform);
         rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
             rectTransform.rect.width * _tesseractDriver.GetHighlightedTexture().height / _tesseractDriver.GetHighlightedTexture().width);
         outputImage.texture = _tesseractDriver.GetHighlightedTexture();
     }
+
+    void Update()
+    {
+        if (updateDelegate != null) { updateDelegate(); }
+
+        if (data != null && !disableCaptureOnUpdate) //Delete disableCaptureOnUpdate if user wants real time capturing.
+        {
+            doubleClickCaptured();
+            //tex.GetPixels32(data);
+            // You can play around with data however you want here.
+            // Color32 has member variables of a, r, g, and b. You can read and write them however you want.
+            //output.SetPixels32(data);
+            //output.Apply();
+            //Recoginze(output);
+        }
+    }
+
+    public Texture2D GetOutput()
+    {
+        return output;
+    }
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+    private void UpdateEditor()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Time.time < this.tapTimer + this.tapThreshold)
+            {
+                if (OnDoubleTap != null) { OnDoubleTap(); }
+                this.tap = false;
+                return;
+            }
+            this.tap = true;
+            this.tapTimer = Time.time;
+        }
+        if (this.tap == true && Time.time > this.tapTimer + this.tapThreshold)
+        {
+            this.tap = false;
+            if (OnSingleTap != null) { OnSingleTap(); }
+        }
+    }
+#elif UNITY_IOS || UNITY_ANDROID
+    private void UpdateMobile ()
+    {
+        for(int i = 0; i < Input.touchCount; i++)
+        {
+            if (Input.GetTouch(i).phase == TouchPhase.Began)
+            {
+                if(Input.GetTouch(i).tapCount == 2)
+                {
+                    if(OnDoubleTap != null){ OnDoubleTap();}
+                }
+                if(Input.GetTouch(i).tapCount == 1)
+                {
+                    if(OnSingleTap != null) { OnSingleTap(); }
+                }
+            }
+        }
+    }
+#endif
+
 }
