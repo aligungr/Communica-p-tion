@@ -29,7 +29,7 @@ public class TesseractDemoScript : MonoBehaviour
     private Action updateDelegate;
     private float tapTimer = 0.0f;
     private bool tap = false;
-    private bool disableCaptureOnUpdate;
+    private bool captureAlways;
 
     private void Awake()
     {
@@ -58,34 +58,18 @@ public class TesseractDemoScript : MonoBehaviour
         texture.Apply();
 
         _tesseractDriver = new TesseractDriver();
-        Recoginze(texture);
+        Recognize(texture);
         SetImageDisplay();
     }
 
 
-    private void doubleClickCaptured()
+    private void doubleClickCaptured() //TODO: Will be odified according to options.
     {
-        if (!disableCaptureOnUpdate)
-            disableCaptureOnUpdate = true;
+        Debug.Log("Double Click Captured");
+        if (captureAlways)
+            captureAlways = false;
         else
-            disableCaptureOnUpdate = false;
-        Color[] texData = tex.GetPixels();
-        Texture2D takenPhoto = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
-        takenPhoto.SetPixels(texData);
-        takenPhoto.Apply();
-        Recoginze(takenPhoto);
-        SetImageDisplay();
-        //byte[] picture = takenPhoto.EncodeToPNG();
-
-        //if (data != null)
-        //{
-        //    Color[] temp = tex.GetPixels();
-        //    // You can play around with data however you want here.
-        //    // Color32 has member variables of a, r, g, and b. You can read and write them however you want.
-        //    output.SetPixels(temp);
-        //    output.Apply();
-        //    Recoginze(output);
-        //}
+            captureAlways = true;
     }
 
     private void StartCamera()
@@ -116,7 +100,7 @@ public class TesseractDemoScript : MonoBehaviour
             output = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
             //GetComponent<Renderer>().material.mainTexture = output;
             data = new Color[tex.width * tex.height];
-            disableCaptureOnUpdate = true;
+            captureAlways = true;
         }
     }
 
@@ -127,7 +111,7 @@ public class TesseractDemoScript : MonoBehaviour
         tex = null;
     }
 
-    private void Recoginze(Texture2D outputTexture)
+    private void Recognize(Texture2D outputTexture)
     {
         ClearTextDisplay();
         AddToTextDisplay(_tesseractDriver.CheckTessVersion());
@@ -170,15 +154,14 @@ public class TesseractDemoScript : MonoBehaviour
     {
         if (updateDelegate != null) { updateDelegate(); }
 
-        if (data != null && !disableCaptureOnUpdate) //Delete disableCaptureOnUpdate if user wants real time capturing.
+        if (data != null && captureAlways) //disableCaptureOnUpdate if user wants double click capturing.
         {
-            doubleClickCaptured();
-            //tex.GetPixels32(data);
-            // You can play around with data however you want here.
-            // Color32 has member variables of a, r, g, and b. You can read and write them however you want.
-            //output.SetPixels32(data);
-            //output.Apply();
-            //Recoginze(output);
+            Color[] texData = tex.GetPixels();
+            Texture2D takenPhoto = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
+            takenPhoto.SetPixels(texData);
+            takenPhoto.Apply();
+            Recognize(takenPhoto);
+            SetImageDisplay();
         }
     }
 
