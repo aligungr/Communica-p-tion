@@ -12,7 +12,8 @@ namespace PrimeTech.SpeechRecognizer {
 
         private Text text;
         Translator.Translator translator;
-        Language nativeLang;
+        private Language nativeLang;
+        private Language foreignLang;
 
         private void Awake() {
             this.text = GetComponent<Text>();
@@ -20,6 +21,7 @@ namespace PrimeTech.SpeechRecognizer {
 
         private void Start() {
             nativeLang = SettingsController.GetLanguage();
+            foreignLang = SettingsController.GetForeignLanguage();
             //AndroidSpeechRecognizer.Construct(new DebugRecognitionListenerProxy());
             AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
 
@@ -27,15 +29,21 @@ namespace PrimeTech.SpeechRecognizer {
         }
 
         public void SetTextOnScreen(string text) {
-            Debug.Log(nativeLang.ToString());
-            translator = new Translator.Translator();
-
-            Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
+            if(foreignLang.ToString() != nativeLang.ToString())
             {
-                this.text.text = result.translatedText;
-            };
+                translator = new Translator.Translator();
 
-            StartCoroutine(translator.translate(text, nativeLang, action));
+                Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
+                {
+                    this.text.text = result.translatedText;
+                };
+
+                StartCoroutine(translator.translate(text, nativeLang, action));
+            }
+            else
+            {
+                this.text.text = text;
+            }
         }
     }
 }
