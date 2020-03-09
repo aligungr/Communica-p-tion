@@ -14,6 +14,7 @@ public class MainScreenUIController : MonoBehaviour
     WebCamTexture tex;
 
     public RawImage display;
+    public Texture background;
     public Text startStopText;
     public AspectRatioFitter fit;
     WebCamDevice device;
@@ -61,7 +62,7 @@ public class MainScreenUIController : MonoBehaviour
 
     private void StopWebCam()
     {
-        display.texture = null;
+        display.texture = background;
         tex.Stop();
         tex = null;
     }

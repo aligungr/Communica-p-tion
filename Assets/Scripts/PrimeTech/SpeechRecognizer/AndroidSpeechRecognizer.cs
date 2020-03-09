@@ -67,6 +67,9 @@ namespace PrimeTech.SpeechRecognizer {
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", true);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE_MODEL", "free_form");
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.MAX_RESULTS", 10);
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS", 3000); //Wait 3 second before hearing.
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.SPEECH_INPUT_MINIMUM_LENGTH_MILLIS", 3000); //Wait 3 second before hearing.
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS", 3000); //Wait 3 second before hearing.
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.ONLY_RETURN_LANGUAGE_PREFERENCE", true);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PREFER_OFFLINE", false);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE", foreignLanguage.ToString());
