@@ -22,7 +22,6 @@ namespace Alchera
             detector = GetComponent<IDetectService>();
             consumer = FaceConsumer.GetComponent<IFaceListConsumer>();
 
-            // start a logic loop
             IEnumerable<FaceData> faces = null;
 
             foreach (Task<Texture> request in sequence.Repeat())
@@ -37,7 +36,6 @@ namespace Alchera
                 faces = translator.Fetch<FaceData>(faces);
                 if (faces != null) consumer.Consume(ref image, faces);
 
-                // release holding resources for detection
                 translator.Dispose();
             }
         }

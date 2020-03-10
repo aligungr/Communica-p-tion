@@ -51,7 +51,7 @@ namespace Alchera
             image.OffsetX = 0;
             image.OffsetY = 0;
 
-            image.Degree = (UInt16)(ReadWebcam.instance.GetAdjustedVideoRotationAngle()); // 방향에 따라 내부에서 이미지를 다르게 처리한다. LandscapeLeft:0 Protrait:90 LandscapeRight,Editor:180 
+            image.Degree = (UInt16)(ReadWebcam.instance.GetAdjustedVideoRotationAngle());
 
             promise.SetResult(image);
             yield break;

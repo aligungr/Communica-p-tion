@@ -28,7 +28,6 @@ namespace Alchera
         {
             instance = this;
 
-            //  Layer가 SkipRendering으로 설정된 FaceObjPrefab은 렌더링되지 않는다.
             int SkipRenderingLayerBit = LayerMask.NameToLayer("Skip Rendering");
             int isCameraSkipRenderingOn = (Camera.main.cullingMask & (1 << SkipRenderingLayerBit)) >> SkipRenderingLayerBit;
             if (isCameraSkipRenderingOn == 1)
@@ -41,7 +40,7 @@ namespace Alchera
         {
             var RequestWidth = 1280;
             var RequestHeight = 720;
-            var RequestedFPS = 120; //카메라가 들어오는 프레임 조절. 
+            var RequestedFPS = 120; 
             prepared = false;
             devices = WebCamTexture.devices;
             CamerasFR = new bool[Mathf.Min(devices.Length, 2)];
@@ -49,10 +48,10 @@ namespace Alchera
             foreach (var device in devices)
             {
                 print($"{device.name} {device.isFrontFacing}");
-                if (front != null && rear != null) break; // 멀티카메라인 경우 일반 카메라가 첫번째 인덱스에 있다고 생각.
+                if (front != null && rear != null) break; 
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-                if (front == null){ //에디터 카메라는 front 이다.
+                if (front == null){ 
                     front = new WebCamTexture(device.name, RequestWidth, RequestHeight, RequestedFPS);
                     CamerasFR[i] = true;
                     FRIndex = i;
@@ -76,7 +75,7 @@ namespace Alchera
 #endif
                 i++;
             }
-            current = rear;//(front == null) ? rear : front; //전면이 기본값.
+            current = rear;//(front == null) ? rear : front; 
             print($"current Camera : {current.deviceName}");
         }
         protected bool GetNextCameraFR()

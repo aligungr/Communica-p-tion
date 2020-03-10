@@ -40,7 +40,6 @@ namespace Alchera
 
         public void Consume(ref ImageData image, IEnumerable<FaceData> list)
         {
-            //풀이 없으면 아무일도 하지 않는다.
             if (pool[0] == null || !ReadWebcam.instance.prepared) return; 
             if (need3D == true)
             {

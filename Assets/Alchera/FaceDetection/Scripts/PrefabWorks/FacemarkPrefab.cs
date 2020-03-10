@@ -11,7 +11,6 @@ namespace Alchera
 
         void Start()
         {
-            // use "Alchera/Resources/LandmarkGuide.jpg" to see Facemark index
             facePoints = new Transform[FaceData.NumLandmark];
 
             transform = this.GetComponent<Transform>();
@@ -35,7 +34,7 @@ namespace Alchera
         {
             var ptr = face.Landmark;
 
-            var height = quad.texture.height < 16 ? 1 : quad.texture.height; //divide by zero 방지 
+            var height = quad.texture.height < 16 ? 1 : quad.texture.height; 
             float adjustment = System.Math.Abs(quad.transform.localScale.y / height);
 
             float centerX = quad.texture.width / 2;
@@ -50,12 +49,12 @@ namespace Alchera
             for (int p = 0; p < FaceData.NumLandmark; ++p)
             {
                 var posX = mirrorX * (ptr[p].x - centerX + image.OffsetX) * adjustment;
-                var posY = mirrorY * (ptr[p].y - centerY + image.OffsetY) * adjustment; // opencv 와 unity 의 이미지 y 좌표계가 반대.
+                var posY = mirrorY * (ptr[p].y - centerY + image.OffsetY) * adjustment; 
                 var posZ = quad.transform.localPosition.z;
 
                 var newPos = Vector3.Lerp(facePoints[p].localPosition, new Vector3(posX, posY, posZ), 0.8f);
                 facePoints[p].localPosition = newPos;
-                facePoints[p].localScale = Vector3.one * adjustment * 6; //적당한 크기로 사이즈 조절
+                facePoints[p].localScale = Vector3.one * adjustment * 6; 
             }
         }
     }

@@ -19,7 +19,7 @@ namespace Alchera
 
             StartCoroutine(SendTextureFrom()); 
 
-            while (true) //TaskCompletionSource 
+            while (true) 
             {
                 if (current != null && current.isPlaying)
                 {
@@ -36,7 +36,7 @@ namespace Alchera
             do
             {
                 if (promise != null && current.isPlaying) {
-                    promise.TrySetResult(current as Texture); //성공하면 texture 가 들어간다.
+                    promise.TrySetResult(current as Texture); 
                 }
                 //yield return ws;
                 yield return null;
