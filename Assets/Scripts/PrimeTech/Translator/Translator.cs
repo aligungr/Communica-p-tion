@@ -1,63 +1,83 @@
 ﻿using Newtonsoft.Json;
 using System;
 using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
 using System.Text;
 using PrimeTech.Core;
+using System.Collections;
+using System.Xml;
 
 namespace PrimeTech.Translator
 {
-    //TODO - Compare to Google API
-    public class Translator : MonoBehaviour
+    public class Translator
     {
-        
-        public string Translate(string text, Language language)
-        {
-            //Yandex automatically detects language from given text.
-            Translator translateObject = new Translator();
-            string result = translateObject.TranslateText(text, language);
 
-            return result;
-        }
-
-        public string TranslateText(string text, Language language)
+        public class Result
         {
-            using (var wb = new WebClient())
+            public const int NETWORK_ERROR = -1;
+            public const int SUCCESS = 200;
+            public const int INVALID_API_KEY = 401;
+            public const int BLOCKED_API_KEY = 402;
+            public const int DAILY_REQUESTS_EXCEEDED = 403;
+            public const int DAILY_TEXT_EXCEEDED = 404;
+            public const int TEXT_LENGTH_EXCEEDED = 413;
+            public const int CANNOT_TRANSLATE = 422;
+            public const int UNSUPPORTED_DIRECTION = 501;
+
+            public readonly int status;
+            public readonly Language language;
+            public readonly string translatedText;
+
+            public Result(int status, Language language, string translatedText)
             {
-                var reqData = new NameValueCollection();
-                reqData["text"] = text; // text to translate
-                reqData["lang"] = language.ToString(); // target language
-                reqData["key"] = "API-Key Here";
-
-                try
-                {
-                    var response = wb.UploadValues("https://translate.yandex.net/api/v1.5/tr.json/translate", "POST", reqData);
-                    string responseInString = Encoding.UTF8.GetString(response);
-                    var rootObject = JsonConvert.DeserializeObject<Translation>(responseInString);
-
-                    return rootObject.text[0];
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError("ERROR!!! " + ex.Message);
-                    throw;
-                }
-
+                this.status = status;
+                this.language = language;
+                this.translatedText = translatedText;
             }
         }
-    }
 
-    class GoogleTranslate
-    {
 
-    }
+        public IEnumerator translate(string text, Language to, Action<Result> callback)
+        {
+            string encodedText = UnityWebRequest.EscapeURL(text);
+            string apiKey = "";
+            string requestUrl = string.Format("https://translate.yandex.net/api/v1.5/tr/translate?key={0}&text={1}&lang={2}", apiKey, encodedText, to.ToString());
+            UnityWebRequest request = UnityWebRequest.Get(requestUrl);
+            yield return request.SendWebRequest();
+            Result result;
+            if (request.isNetworkError)
+            {
+                result = new Result(Result.NETWORK_ERROR, to, null);
+            }
+            else
+            {
+                string responseText = request.downloadHandler.text;
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(responseText);
 
-    class Translation
-    {
-        public int code { get; set; }
-        public string lang { get; set; }
-        public List<string> text { get; set; }
+                XmlNode translation = doc.SelectSingleNode("Translation");
+                XmlNode error = doc.SelectSingleNode("Error");
+
+                int status;
+                string translatedText;
+
+                if (translation != null)
+                {
+                    status = int.Parse(translation.Attributes["code"].Value);
+                    translatedText = doc.SelectSingleNode("Translation/text").InnerText;
+                }
+                else
+                {
+                    status = int.Parse(error.Attributes["code"].Value);
+                    translatedText = null;
+                }
+                result = new Result(status, to, translatedText);
+            }
+            callback(result);
+        }
+
     }
 }
