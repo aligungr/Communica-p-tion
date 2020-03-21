@@ -25,7 +25,6 @@ namespace PrimeTech.SpeechRecognizer {
             nativeLang = SettingsController.GetLanguage();
             foreignLang = SettingsController.GetForeignLanguage();
             translate = (int)SettingsController.GetTranslateLanguage();
-            //AndroidSpeechRecognizer.Construct(new DebugRecognitionListenerProxy());
             AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
 
             AndroidSpeechRecognizer.StartListening();
@@ -39,14 +38,15 @@ namespace PrimeTech.SpeechRecognizer {
                 Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
                 {
                     this.text.text = result.translatedText;
-                    Thread.Sleep(1000);
                     AndroidSpeechRecognizer.StartListening();
                 };
                 StartCoroutine(translator.translate(text, nativeLang, action));
             }
             else
-            {
+            {   
                 this.text.text = text;
+                if(SettingsController.GetSubtitleTrigger() == 0) //Always on
+                    AndroidSpeechRecognizer.StartListening();
             }
         }
     }

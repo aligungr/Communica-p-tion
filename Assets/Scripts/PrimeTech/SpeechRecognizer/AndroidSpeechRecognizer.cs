@@ -66,7 +66,8 @@ namespace PrimeTech.SpeechRecognizer {
             var intent = new AndroidJavaObject("android.content.Intent", "android.speech.action.RECOGNIZE_SPEECH");
             intent.Call<AndroidJavaObject>("putExtra", "calling_package", "com.primetech.communication");
 
-            if(foreignLanguage.ToString() != nativeLanguage.ToString())
+            //languages are different or Always on 
+            if (foreignLanguage.ToString() != nativeLanguage.ToString() || SettingsController.GetSubtitleTrigger() == 0) 
                 intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", false);
             else
                 intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", true);
