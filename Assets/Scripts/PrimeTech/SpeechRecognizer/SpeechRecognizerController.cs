@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using PrimeTech.Translator;
 using PrimeTech.Core;
 using System;
+using System.Threading;
 
 namespace PrimeTech.SpeechRecognizer {
 
@@ -38,8 +39,9 @@ namespace PrimeTech.SpeechRecognizer {
                 Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
                 {
                     this.text.text = result.translatedText;
+                    Thread.Sleep(1000);
+                    AndroidSpeechRecognizer.StartListening();
                 };
-
                 StartCoroutine(translator.translate(text, nativeLang, action));
             }
             else
