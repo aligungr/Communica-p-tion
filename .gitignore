@@ -61,3 +61,7 @@ crashlytics-build.properties
 # MACBOOK generated files
 .DS_Store
 
+# API Keys
+Assets/Scripts/PrimeTech/Core/Key.cs
+Key.cs
+

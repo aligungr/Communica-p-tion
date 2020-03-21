@@ -43,7 +43,7 @@ namespace PrimeTech.Translator
         public IEnumerator translate(string text, Language to, Action<Result> callback)
         {
             string encodedText = UnityWebRequest.EscapeURL(text);
-            string apiKey = "";
+            string apiKey = Key.translateAPIKey;
             string requestUrl = string.Format("https://translate.yandex.net/api/v1.5/tr/translate?key={0}&text={1}&lang={2}", apiKey, encodedText, to.ToString());
             UnityWebRequest request = UnityWebRequest.Get(requestUrl);
             yield return request.SendWebRequest();
