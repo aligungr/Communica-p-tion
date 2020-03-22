@@ -62,6 +62,6 @@ crashlytics-build.properties
 .DS_Store
 
 # API Keys
-Assets/Scripts/PrimeTech/Core/Key.cs
+Assets/Scripts/PrimeTech/Core/Key.cs*
 Key.cs
 

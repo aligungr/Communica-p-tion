@@ -17,6 +17,7 @@ public class MainScreenUIController : MonoBehaviour
     public Texture background;
     public Text startStopText;
     public AspectRatioFitter fit;
+    public Button ManualSpeech;
     WebCamDevice device;
 
     public Text text;
@@ -70,6 +71,10 @@ public class MainScreenUIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if((int)SettingsController.GetSubtitleTrigger() != 1)
+        {
+            ManualSpeech.gameObject.SetActive(false);
+        }
         StartStopCamClicked();
     }
 
