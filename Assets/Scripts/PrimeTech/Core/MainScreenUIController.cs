@@ -1,4 +1,5 @@
 ﻿using PrimeTech.Core;
+using PrimeTech.SpeechRecognizer;
 using PrimeTech.Translator;
 using System;
 using System.Collections;
@@ -76,6 +77,13 @@ public class MainScreenUIController : MonoBehaviour
             ManualSpeech.gameObject.SetActive(false);
         }
         StartStopCamClicked();
+    }
+
+    public void StartSpeechManually()
+    {
+        Debug.Log("Starting Speech Manually");
+        AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
+        AndroidSpeechRecognizer.StartListening();
     }
 
     // Update is called once per frame
