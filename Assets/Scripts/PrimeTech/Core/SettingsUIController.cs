@@ -117,7 +117,17 @@ namespace PrimeTech.Core
             SettingsController.SetForeignLanguage(Language.GetAllLanguages()[foreignLanguage.value]);
             SettingsController.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsController.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
-            SceneManager.LoadScene("MainScreenUI");
+            
+            if (subtitleTrigger.value == 2)
+            {
+                Debug.Log("sahneye giriyor");
+                SceneManager.LoadScene("Face2DFacemark");
+            }
+            else
+            {
+                SceneManager.LoadScene("MainScreenUI");
+            }
+            //SceneManager.LoadScene("MainScreenUI");
             //Application.Quit();
         }
 

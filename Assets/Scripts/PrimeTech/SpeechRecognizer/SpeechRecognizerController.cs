@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using PrimeTech.Translator;
 using PrimeTech.Core;
 using System;
+using Alchera;
+using System.Threading.Tasks;
 
 namespace PrimeTech.SpeechRecognizer {
 
@@ -14,35 +16,114 @@ namespace PrimeTech.SpeechRecognizer {
         Translator.Translator translator;
         private Language nativeLang;
         private Language foreignLang;
+        private SubtitleTrigger subtitleTrigger;
 
-        private void Awake() {
-            this.text = GetComponent<Text>();
+        /*private MainScreenUIController face;
+        private WebCamTexture wb;
+
+        ITextureSequence sequence;
+        ITextureConverter converter;
+        IDetectService detector;
+
+        [SerializeField] GameObject FaceConsumer = null;
+        IFaceListConsumer consumer = null;*/
+        //FaceSceneBehavior fb;
+        bool isFace;
+        private void Awake()
+        {
+                this.text = GetComponent<Text>();
         }
 
         private void Start() {
             nativeLang = SettingsController.GetLanguage();
             foreignLang = SettingsController.GetForeignLanguage();
-            //AndroidSpeechRecognizer.Construct(new DebugRecognitionListenerProxy());
+            subtitleTrigger = SettingsController.GetSubtitleTrigger();
             AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
-
             AndroidSpeechRecognizer.StartListening();
-        }
-
-        public void SetTextOnScreen(string text) {
-            if(foreignLang.ToString() != nativeLang.ToString())
+            ///face = new MainScreenUIController();
+            /*if ((int)subtitleTrigger == 2)
             {
-                translator = new Translator.Translator();
-
-                Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
+                Debug.Log("geldi if e");
+                Debug.Log("geldi 1");
+                Debug.Log("geldi 2");
+                isFace = GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected;
+                if (isFace)
                 {
-                    this.text.text = result.translatedText;
-                };
-
-                StartCoroutine(translator.translate(text, nativeLang, action));
+                    Debug.Log("geldi 3 true face");
+                    AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
+                    AndroidSpeechRecognizer.StartListening();
+                }
+                else
+                {
+                    Debug.Log("geldi 4 false face");
+                }
             }
             else
             {
-                this.text.text = text;
+                AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
+                AndroidSpeechRecognizer.StartListening();
+            }*/
+
+
+            //isFace = fb.GetComponent<FaceSceneBehavior>().faceDetected;
+            // Debug.Log("geldi face degeri: " + isFace);
+            /* if (isFace)
+             {
+                 //Debug.Log("girdi face: " + isFace);
+                 AndroidSpeechRecognizer.StartListening();
+             }*/
+
+
+        }
+
+        public void SetTextOnScreen(string text) {
+            subtitleTrigger = SettingsController.GetSubtitleTrigger();
+            if ((int)subtitleTrigger == 2)
+            {
+                Debug.Log("geldi if awake");
+                isFace = GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected;
+                if (isFace)
+                {
+                    Debug.Log("geldi 3 true face awake ");
+                    if (foreignLang.ToString() != nativeLang.ToString())
+                    {
+                        translator = new Translator.Translator();
+
+                        Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
+                        {
+                            this.text.text = result.translatedText;
+                        };
+
+                        StartCoroutine(translator.translate(text, nativeLang, action));
+                    }
+                    else
+                    {
+                        this.text.text = text;
+                    }
+                }
+                else
+                {
+                    this.text.text = ":)";
+                }
+
+            }
+            else 
+            {
+                if (foreignLang.ToString() != nativeLang.ToString())
+                {
+                    translator = new Translator.Translator();
+
+                    Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
+                    {
+                        this.text.text = result.translatedText;
+                    };
+
+                    StartCoroutine(translator.translate(text, nativeLang, action));
+                }
+                else
+                {
+                    this.text.text = text;
+                }
             }
         }
     }

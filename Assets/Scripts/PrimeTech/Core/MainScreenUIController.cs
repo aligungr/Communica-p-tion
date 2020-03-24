@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Alchera;
+using System.Threading.Tasks;
 
 public class MainScreenUIController : MonoBehaviour
 {
     int currentCamIndex = 0;
 
-    WebCamTexture tex;
+    public WebCamTexture tex;
 
     public RawImage display;
     public Text startStopText;
@@ -19,6 +21,13 @@ public class MainScreenUIController : MonoBehaviour
     WebCamDevice device;
 
     public Text text;
+
+
+    private SubtitleTrigger subtitleTrigger;
+    ITextureSequence sequence;
+    ITextureConverter converter;
+    IDetectService detector;
+    public bool faceDetected;
 
     private void Awake()
     {
@@ -30,7 +39,7 @@ public class MainScreenUIController : MonoBehaviour
         SceneManager.LoadScene("OptionsUI");
     }
 
-    public void StartStopCamClicked()
+    public  void StartStopCamClicked()
     {
         if(tex != null)
         {
@@ -55,6 +64,33 @@ public class MainScreenUIController : MonoBehaviour
 
             tex.Play();
             startStopText.text = "Stop Camera";
+
+           /* subtitleTrigger = SettingsController.GetSubtitleTrigger();
+            if ((int)subtitleTrigger == 2)
+            {
+                sequence = GetComponent<ITextureSequence>();
+                converter = GetComponent<ITextureConverter>();
+                detector = GetComponent<IDetectService>();
+                Debug.Log("mainin icine geldi1");
+                IEnumerable<FaceData> faces = null;
+                var texture = tex;
+                var image = await converter.Convert(texture);
+                Debug.Log("mainin icine geldi2");
+                var translator = await detector.Detect(ref image);
+                Debug.Log("mainin icine geldi3");
+                faces = translator.Fetch<FaceData>(faces);
+                Debug.Log("mainin icine geldi4");
+                if (faces != null)
+                {
+                    faceDetected = true;
+                    translator.Dispose();
+                }
+                else
+                {
+                    faceDetected = false;
+                    translator.Dispose();
+                }
+            }*/
         }
         
     }

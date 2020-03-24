@@ -88,6 +88,8 @@ namespace Alchera
             mirrorY = -1;
             if (isCameraFront)
                 mirrorX *= -1;
+
+
         }
         public int GetAdjustedVideoRotationAngle()
         {

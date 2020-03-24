@@ -20,13 +20,18 @@ namespace Alchera
 
         public void UseFaceData(ref ImageData image, ref FaceData face)
         {
-            if (facePoints == null) return;
+            if (facePoints == null)
+            {
+                GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = false;
+                return;
+            }
             if (quad == null)
             {
+                GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = false;
                 quad = FindObjectOfType<AutoBackgroundQuad>();
                 return;
             }
-
+            GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = true;
             SetPoints(ref image, ref face);
         }
 
