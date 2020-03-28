@@ -17,17 +17,7 @@ namespace PrimeTech.SpeechRecognizer {
         private Language nativeLang;
         private Language foreignLang;
         private SubtitleTrigger subtitleTrigger;
-
-        /*private MainScreenUIController face;
-        private WebCamTexture wb;
-
-        ITextureSequence sequence;
-        ITextureConverter converter;
-        IDetectService detector;
-
-        [SerializeField] GameObject FaceConsumer = null;
-        IFaceListConsumer consumer = null;*/
-        //FaceSceneBehavior fb;
+        private int translate;
         bool isFace;
         private void Awake()
         {
@@ -37,55 +27,35 @@ namespace PrimeTech.SpeechRecognizer {
         private void Start() {
             nativeLang = SettingsController.GetLanguage();
             foreignLang = SettingsController.GetForeignLanguage();
+            translate = (int)SettingsController.GetTranslateLanguage();
             subtitleTrigger = SettingsController.GetSubtitleTrigger();
-            AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
-            AndroidSpeechRecognizer.StartListening();
-            ///face = new MainScreenUIController();
-            /*if ((int)subtitleTrigger == 2)
-            {
-                Debug.Log("geldi if e");
-                Debug.Log("geldi 1");
-                Debug.Log("geldi 2");
-                isFace = GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected;
-                if (isFace)
-                {
-                    Debug.Log("geldi 3 true face");
-                    AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
-                    AndroidSpeechRecognizer.StartListening();
-                }
-                else
-                {
-                    Debug.Log("geldi 4 false face");
-                }
-            }
-            else
+            if ((int)subtitleTrigger == 0) //Always on
             {
                 AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
                 AndroidSpeechRecognizer.StartListening();
-            }*/
-
-
-            //isFace = fb.GetComponent<FaceSceneBehavior>().faceDetected;
-            // Debug.Log("geldi face degeri: " + isFace);
-            /* if (isFace)
-             {
-                 //Debug.Log("girdi face: " + isFace);
-                 AndroidSpeechRecognizer.StartListening();
-             }*/
-
-
+            }
+            if ((int)subtitleTrigger == 2) //If face detected
+            {
+                AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
+                AndroidSpeechRecognizer.StartListening();
+            }
+        }
+        private void Update() {
+            subtitleTrigger = SettingsController.GetSubtitleTrigger();
+            if ((int)subtitleTrigger == 2)
+            {
+                isFace = GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected; 
+                AndroidSpeechRecognizer.StartListening();
+            }
         }
 
         public void SetTextOnScreen(string text) {
             subtitleTrigger = SettingsController.GetSubtitleTrigger();
             if ((int)subtitleTrigger == 2)
             {
-                Debug.Log("geldi if awake");
-                isFace = GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected;
                 if (isFace)
                 {
-                    Debug.Log("geldi 3 true face awake ");
-                    if (foreignLang.ToString() != nativeLang.ToString())
+                    if (foreignLang.ToString() != nativeLang.ToString() && translate == 0) //translate -> 0 = ON ,  translate -> 1 = OFF
                     {
                         translator = new Translator.Translator();
 
@@ -93,7 +63,6 @@ namespace PrimeTech.SpeechRecognizer {
                         {
                             this.text.text = result.translatedText;
                         };
-
                         StartCoroutine(translator.translate(text, nativeLang, action));
                     }
                     else
@@ -103,26 +72,28 @@ namespace PrimeTech.SpeechRecognizer {
                 }
                 else
                 {
-                    this.text.text = ":)";
+                    this.text.text = "";
                 }
-
             }
             else 
             {
-                if (foreignLang.ToString() != nativeLang.ToString())
+                if (foreignLang.ToString() != nativeLang.ToString() && translate == 0) //translate -> 0 = ON ,  translate -> 1 = OFF
                 {
                     translator = new Translator.Translator();
 
                     Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
                     {
                         this.text.text = result.translatedText;
+                        if ((int)SettingsController.GetSubtitleTrigger() == 0) //Always on
+                            AndroidSpeechRecognizer.StartListening();
                     };
-
                     StartCoroutine(translator.translate(text, nativeLang, action));
                 }
                 else
                 {
                     this.text.text = text;
+                    if ((int)SettingsController.GetSubtitleTrigger() == 0) //Always on
+                        AndroidSpeechRecognizer.StartListening();
                 }
             }
         }

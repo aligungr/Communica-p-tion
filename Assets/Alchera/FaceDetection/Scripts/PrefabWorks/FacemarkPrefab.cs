@@ -20,25 +20,24 @@ namespace Alchera
 
         public void UseFaceData(ref ImageData image, ref FaceData face)
         {
+            GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = false;
             if (facePoints == null)
             {
-                GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = false;
                 return;
             }
             if (quad == null)
             {
-                GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = false;
                 quad = FindObjectOfType<AutoBackgroundQuad>();
                 return;
             }
-            GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = true;
+           
             SetPoints(ref image, ref face);
         }
 
         public unsafe void SetPoints(ref ImageData image, ref FaceData face)
         {
             var ptr = face.Landmark;
-
+            
             var height = quad.texture.height < 16 ? 1 : quad.texture.height; 
             float adjustment = System.Math.Abs(quad.transform.localScale.y / height);
 
@@ -53,10 +52,12 @@ namespace Alchera
 
             for (int p = 0; p < FaceData.NumLandmark; ++p)
             {
+                GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected = true; 
+                //Debug.Log("px: " + ptr[p].x + "py: " + ptr[p].y);
                 var posX = mirrorX * (ptr[p].x - centerX + image.OffsetX) * adjustment;
                 var posY = mirrorY * (ptr[p].y - centerY + image.OffsetY) * adjustment; 
                 var posZ = quad.transform.localPosition.z;
-
+                
                 var newPos = Vector3.Lerp(facePoints[p].localPosition, new Vector3(posX, posY, posZ), 0.8f);
                 facePoints[p].localPosition = newPos;
                 facePoints[p].localScale = Vector3.one * adjustment * 6; 

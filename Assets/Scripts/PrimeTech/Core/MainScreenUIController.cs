@@ -64,33 +64,6 @@ public class MainScreenUIController : MonoBehaviour
 
             tex.Play();
             startStopText.text = "Stop Camera";
-
-           /* subtitleTrigger = SettingsController.GetSubtitleTrigger();
-            if ((int)subtitleTrigger == 2)
-            {
-                sequence = GetComponent<ITextureSequence>();
-                converter = GetComponent<ITextureConverter>();
-                detector = GetComponent<IDetectService>();
-                Debug.Log("mainin icine geldi1");
-                IEnumerable<FaceData> faces = null;
-                var texture = tex;
-                var image = await converter.Convert(texture);
-                Debug.Log("mainin icine geldi2");
-                var translator = await detector.Detect(ref image);
-                Debug.Log("mainin icine geldi3");
-                faces = translator.Fetch<FaceData>(faces);
-                Debug.Log("mainin icine geldi4");
-                if (faces != null)
-                {
-                    faceDetected = true;
-                    translator.Dispose();
-                }
-                else
-                {
-                    faceDetected = false;
-                    translator.Dispose();
-                }
-            }*/
         }
         
     }
