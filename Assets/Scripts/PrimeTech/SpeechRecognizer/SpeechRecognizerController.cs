@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using PrimeTech.Translator;
 using PrimeTech.Core;
 using System;
+using System.Threading;
 
 namespace PrimeTech.SpeechRecognizer {
 
@@ -14,6 +15,7 @@ namespace PrimeTech.SpeechRecognizer {
         Translator.Translator translator;
         private Language nativeLang;
         private Language foreignLang;
+        private int translate;
 
         private void Awake() {
             this.text = GetComponent<Text>();
@@ -22,28 +24,34 @@ namespace PrimeTech.SpeechRecognizer {
         private void Start() {
             nativeLang = SettingsController.GetLanguage();
             foreignLang = SettingsController.GetForeignLanguage();
-            //AndroidSpeechRecognizer.Construct(new DebugRecognitionListenerProxy());
-            AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
-
-            AndroidSpeechRecognizer.StartListening();
+            translate = (int)SettingsController.GetTranslateLanguage();
+            if((int)SettingsController.GetSubtitleTrigger() == 0) //Always on
+            {
+                AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
+                AndroidSpeechRecognizer.StartListening();
+            }
         }
 
         public void SetTextOnScreen(string text) {
-            if(foreignLang.ToString() != nativeLang.ToString())
+            if(foreignLang.ToString() != nativeLang.ToString() && translate == 0) //translate -> 0 = ON ,  translate -> 1 = OFF
             {
                 translator = new Translator.Translator();
 
                 Action<Translator.Translator.Result> action = (Translator.Translator.Result result) =>
                 {
                     this.text.text = result.translatedText;
+                    if ((int)SettingsController.GetSubtitleTrigger() == 0) //Always on
+                        AndroidSpeechRecognizer.StartListening();
                 };
-
                 StartCoroutine(translator.translate(text, nativeLang, action));
             }
             else
-            {
+            {   
                 this.text.text = text;
+                if((int)SettingsController.GetSubtitleTrigger() == 0) //Always on
+                    AndroidSpeechRecognizer.StartListening();
             }
         }
+
     }
 }
