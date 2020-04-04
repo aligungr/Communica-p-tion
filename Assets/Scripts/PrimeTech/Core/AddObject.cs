@@ -28,7 +28,7 @@ namespace PrimeTech.Core
 
         private void loadMedia()
         {
-            /*string url = "http://localhost:64021/mediaItems";
+            string url = "http://localhost:64021/mediaItems/"+userId;
             byte[] array = null;
             string downloadData;
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
@@ -48,8 +48,7 @@ namespace PrimeTech.Core
                 }
             };
             HttpRequest.Send(this, UnityWebRequest.kHttpVerbPOST, url, null, array, myHandler1);
-           */
-
+           /*
             using (StreamReader r = new StreamReader(mediaPath))
             {
                 string json = r.ReadToEnd();
@@ -60,14 +59,14 @@ namespace PrimeTech.Core
                     addItem(item.name, item.tumbnail, item.id);
                 }
             }
+            */
         }
         void Start()
         {
-            welcome = GameObject.FindObjectOfType<WelcomeController>();
-            userId = int.Parse(welcome.id.text);
-            Debug.Log(userId);
-            loadMedia();
-
+             welcome = GameObject.FindObjectOfType<WelcomeController>();
+             userId = int.Parse(welcome.id.text);
+             Debug.Log(userId);
+             loadMedia();
         }
 
         public void addItem(string name, string image, string id)
@@ -86,8 +85,39 @@ namespace PrimeTech.Core
 
             copy.GetComponent<Image>().sprite = sprite;
 
-            copy.GetComponent<Button>().onClick.AddListener(() => { Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex); });
+            copy.GetComponent<Button>().onClick.AddListener(() => { 
+                Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
+                downloadMedia(copyOfIndex);
+            });
             index++;
+        }
+        private void downloadMedia(int i)
+        {
+            string url = "http://localhost:64021/media/"+ userId + "/" + mediaList[i].id;
+            byte[] array = null;
+            HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+            {
+                if (statusCode == 200)
+                {
+                    if (responseData != null)
+                    {
+                        byte[] itemBGBytes = responseData;
+                        AndroidJavaClass jc = new AndroidJavaClass("android.os.Environment");
+                        string path = jc.CallStatic<AndroidJavaObject>("getExternalStoragePublicDirectory", jc.GetStatic<string>("DIRECTORY_DCIM")).Call<string>("getAbsolutePath");
+                        path = Path.Combine(path, "CommunicaptionMedias");
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        string path2 = path + mediaList[i].name + ".jpg";
+                        if (!File.Exists(path2))
+                        {
+                            File.WriteAllBytes(path2, itemBGBytes);
+                        }
+                    }
+                }
+            };
+            HttpRequest.Send(this, UnityWebRequest.kHttpVerbPOST, url, null, array, myHandler1);
         }
 
     }

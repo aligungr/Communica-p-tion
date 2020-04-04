@@ -86,6 +86,10 @@ public class MainScreenUIController : MonoBehaviour
         AndroidSpeechRecognizer.StartListening();
     }
 
+    public void goToGalery()
+    {
+        SceneManager.LoadScene("GaleryScene");
+    }
     // Update is called once per frame
     void Update()
     {
