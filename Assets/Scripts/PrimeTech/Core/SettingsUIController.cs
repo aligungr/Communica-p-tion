@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using static HttpRequest;
+using UnityEngine.Networking;
+
 
 namespace PrimeTech.Core
 {
@@ -16,6 +19,14 @@ namespace PrimeTech.Core
         public Dropdown subtitleTrigger;
         public Dropdown translateLanguage;
         public Button apply;
+        public GameObject disconnect;
+
+        private PinScreenController pinScreen;
+        private string pin;
+        private Button disconnect_button;
+        private int userId;
+
+
 
         public void AddOptionsToMode()
         {
@@ -109,7 +120,22 @@ namespace PrimeTech.Core
         {
             SaveSettings();
         }
-
+        public void OnClickDisconnectButton()
+        {
+            string url = "http://localhost:64021/disconnectDevice" + userId;
+            byte[] array = null;
+            HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+            {
+                if (statusCode == 200)
+                {
+                    if (responseData != null)
+                    {
+                        disconnect.SetActive(false);
+                    }
+                }
+            };
+            HttpRequest.Send(this, UnityWebRequest.kHttpVerbPOST, url, null, array, myHandler1);
+        }
         public void SaveSettings()
         {
             SettingsController.SetMode((Modes)mode.value);
@@ -120,14 +146,47 @@ namespace PrimeTech.Core
             SceneManager.LoadScene("MainScreenUI");
             //Application.Quit();
         }
-
+        public void SetDisconnectButton()
+        {
+            GameObject disconnectButton = (GameObject)Instantiate(disconnect);
+            disconnect.SetActive(false);
+            disconnect_button = GameObject.Find("Button_d").GetComponent<Button>();
+            CheckIfConnected();
+        }
+        private void CheckIfConnected()
+        {
+            
+            pinScreen = GameObject.FindObjectOfType<PinScreenController>();
+            pin = pinScreen.pin;
+            Debug.Log(pin);
+            
+            string url = "http://localhost:64021/checkPairing" + pin;
+            byte[] array = null;
+            HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+            {
+                if (statusCode == 200)
+                {
+                    if (responseData != null)
+                    {
+                        userId = BitConverter.ToInt32(responseData, 0);
+                        if (userId != 0)
+                        {
+                            disconnect.SetActive(true);
+                        }
+                    }     
+                }
+            };
+            HttpRequest.Send(this, UnityWebRequest.kHttpVerbPOST, url, null, array, myHandler1);
+        }
         void Start()
         {
+            
             AddOptionsToMode();
             AddOptionsToLanguage();
             AddOptionsToForeignLanguage();
             AddOptionsToSubtitleTrigger();
             AddOptionsToTranslateLanguage();
+            SetDisconnectButton();
 
             mode.onValueChanged.AddListener(delegate { OnModeChange(); });
             language.onValueChanged.AddListener(delegate { OnLanguagesChange(); });
@@ -135,6 +194,8 @@ namespace PrimeTech.Core
             subtitleTrigger.onValueChanged.AddListener(delegate { OnSubtitleTriggerChange(); });
             translateLanguage.onValueChanged.AddListener(delegate { OnTranslateLanguageChange(); });
             apply.onClick.AddListener(delegate { OnClickApplyButton(); });
+            disconnect_button.onClick.AddListener(delegate { OnClickDisconnectButton(); });
+
 
             mode.value = (int)SettingsController.GetMode();
             language.value = Language.GetAllLanguages().IndexOf(SettingsController.GetLanguage());

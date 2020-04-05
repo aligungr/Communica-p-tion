@@ -15,7 +15,7 @@ namespace PrimeTech.Core
         public Button buttonPin;
         public GameObject pinScreen;
         private WelcomeController welcome;
-        private string pin;
+        public string pin;
         public int userId;
 
         // Start is called before the first frame update
@@ -25,7 +25,7 @@ namespace PrimeTech.Core
             welcome = GameObject.FindObjectOfType<WelcomeController>();
             buttonPin.onClick.AddListener(validatePin);
         }
-
+        
         private void validatePin()
         {
             pin = pinArea.GetComponent<InputField>().text;
