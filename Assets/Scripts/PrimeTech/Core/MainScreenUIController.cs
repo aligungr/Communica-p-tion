@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Alchera;
+using System.Threading.Tasks;
 
 public class MainScreenUIController : MonoBehaviour
 {
     int currentCamIndex = 0;
 
-    WebCamTexture tex;
+    public WebCamTexture tex;
 
     public RawImage display;
     public Texture background;
@@ -22,6 +24,13 @@ public class MainScreenUIController : MonoBehaviour
     WebCamDevice device;
 
     public Text text;
+
+
+    private SubtitleTrigger subtitleTrigger;
+    ITextureSequence sequence;
+    ITextureConverter converter;
+    IDetectService detector;
+    public bool faceDetected;
 
     private void Awake()
     {
@@ -33,7 +42,7 @@ public class MainScreenUIController : MonoBehaviour
         SceneManager.LoadScene("OptionsUI");
     }
 
-    public void StartStopCamClicked()
+    public  void StartStopCamClicked()
     {
         if(tex != null)
         {
