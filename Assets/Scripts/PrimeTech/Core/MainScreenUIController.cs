@@ -1,4 +1,5 @@
 ﻿using PrimeTech.Core;
+using PrimeTech.SpeechRecognizer;
 using PrimeTech.Translator;
 using System;
 using System.Collections;
@@ -16,8 +17,10 @@ public class MainScreenUIController : MonoBehaviour
     public WebCamTexture tex;
 
     public RawImage display;
+    public Texture background;
     public Text startStopText;
     public AspectRatioFitter fit;
+    public Button ManualSpeech;
     WebCamDevice device;
 
     public Text text;
@@ -70,7 +73,7 @@ public class MainScreenUIController : MonoBehaviour
 
     private void StopWebCam()
     {
-        display.texture = null;
+        display.texture = background;
         tex.Stop();
         tex = null;
     }
@@ -78,7 +81,18 @@ public class MainScreenUIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if((int)SettingsController.GetSubtitleTrigger() != 1)
+        {
+            ManualSpeech.gameObject.SetActive(false);
+        }
         StartStopCamClicked();
+    }
+
+    public void StartSpeechManually()
+    {
+        Debug.Log("Starting Speech Manually");
+        AndroidSpeechRecognizer.Construct(new ScreenRecognitionListenerProxy());
+        AndroidSpeechRecognizer.StartListening();
     }
 
     // Update is called once per frame

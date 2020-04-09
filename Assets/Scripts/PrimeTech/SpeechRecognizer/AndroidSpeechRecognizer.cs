@@ -62,14 +62,25 @@ namespace PrimeTech.SpeechRecognizer {
 
         private static AndroidJavaObject CreateIntent() {
             Language foreignLanguage = SettingsController.GetForeignLanguage();
+            Language nativeLanguage = SettingsController.GetLanguage();
             var intent = new AndroidJavaObject("android.content.Intent", "android.speech.action.RECOGNIZE_SPEECH");
             intent.Call<AndroidJavaObject>("putExtra", "calling_package", "com.primetech.communication");
-            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", true);
+
+            //languages are different or Always on 
+            if (foreignLanguage.ToString() != nativeLanguage.ToString() || SettingsController.GetSubtitleTrigger() == 0) 
+                intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", false);
+            else
+                intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PARTIAL_RESULTS", true);
+
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE_MODEL", "free_form");
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS", 3000); //Wait 3 second before hearing.
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.SPEECH_INPUT_MINIMUM_LENGTH_MILLIS", 3000); //Wait 3 second before hearing.
+            intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS", 3000); //Wait 3 second before hearing.
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.MAX_RESULTS", 10);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.ONLY_RETURN_LANGUAGE_PREFERENCE", true);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.PREFER_OFFLINE", false);
             intent.Call<AndroidJavaObject>("putExtra", "android.speech.extra.LANGUAGE", foreignLanguage.ToString());
+
             
             return intent;
         }
