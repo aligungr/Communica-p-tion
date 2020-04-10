@@ -10,5 +10,6 @@ namespace PrimeTech.Core
         public string name;
         public string tumbnail;
         public string id;
+        public string type;
     }
 }
