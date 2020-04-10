@@ -49,7 +49,7 @@ namespace PrimeTech.Core
                      }
                  }
              };
-            HttpRequest.Send(this, UnityWebRequest.kHttpVerbPOST, url, null, array, myHandler1);
+            HttpRequest.Send(this, "POST", url, null, array, myHandler1);
 
         }
     }
