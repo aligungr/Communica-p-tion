@@ -11,7 +11,7 @@ public class CameraScript : MonoBehaviour
     void Start()
     {
         if (backCam == null)
-            backCam = new WebCamTexture();
+            backCam = new WebCamTexture(Screen.width, Screen.height);
 
         GetComponent<Renderer>().material.mainTexture = backCam;
 

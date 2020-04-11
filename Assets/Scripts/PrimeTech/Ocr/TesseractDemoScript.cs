@@ -9,26 +9,23 @@ public class TesseractDemoScript : MonoBehaviour
     public CameraScript cam;
     private TesseractDriver _tesseractDriver;
     private string _text = "";
+    private Texture2D _texture;
 
     private void Start()
     {
-        Texture2D texture = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
-        texture.SetPixels32(imageToRecognize.GetPixels32());
-        texture.Apply();
+        //Texture2D texture = new Texture2D(imageToRecognize.width, imageToRecognize.height, TextureFormat.ARGB32, false);
+        //texture.SetPixels32(imageToRecognize.GetPixels32());
+        //texture.Apply();
         cam = new CameraScript();
-        _tesseractDriver = new TesseractDriver();
-        
-           
-        
-            
-        Recognize(texture);
-        SetImageDisplay();
+        _tesseractDriver = new TesseractDriver();   
+        //Recognize(texture);
+        //SetImageDisplay();
     }
     private void OnGUI()
     {
         
 
-        _tesseractDriver = new TesseractDriver();
+        //_tesseractDriver = new TesseractDriver();
         if (GUI.Button(new Rect(180, 180, 90, 90), "Click"))
         {
            imageToRecognize = cam.TakeSnapshot();
@@ -37,7 +34,7 @@ public class TesseractDemoScript : MonoBehaviour
             texture2.Apply();
             if (imageToRecognize != null)
             {
-                //Recognize(texture2);
+                Recognize(texture2);
                 //SetImageDisplay();
 
             }
@@ -46,12 +43,19 @@ public class TesseractDemoScript : MonoBehaviour
 
     private void Recognize(Texture2D outputTexture)
     {
+        _texture = outputTexture;
         ClearTextDisplay();
         AddToTextDisplay(_tesseractDriver.CheckTessVersion());
-        _tesseractDriver.Setup();
-        Debug.Log("Setup başarılı");
-        AddToTextDisplay(_tesseractDriver.Recognize(outputTexture));
+        _tesseractDriver.Setup(OnSetupCompleteRecognize);
+        //Debug.Log("Setup başarılı");
+        //AddToTextDisplay(_tesseractDriver.Recognize(outputTexture));
+        //AddToTextDisplay(_tesseractDriver.GetErrorMessage(), true);
+    }
+    private void OnSetupCompleteRecognize()
+    {
+        AddToTextDisplay(_tesseractDriver.Recognize(_texture));
         AddToTextDisplay(_tesseractDriver.GetErrorMessage(), true);
+        SetImageDisplay();
     }
 
     private void ClearTextDisplay()
