@@ -48,7 +48,7 @@ namespace PrimeTech.Core
                     Debug.Log(responseText);
                 }*/
             };
-            HttpRequest.Send(this, UnityWebRequest.kHttpVerbPOST, url, null, array, myHandler1);
+            HttpRequest.Send(this, "POST", url, null, array, myHandler1);
         }
         public void updateId(int newId)
         {

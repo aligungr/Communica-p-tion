@@ -2,14 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace PrimeTech.Core
 {
     [Serializable]
-    public class Media
+    public class OcrMedia
     {
         public string name;
-        public string tumbnail;
+        public string picture;
         public string id;
-        public string type;
+        public string text;
     }
 }
