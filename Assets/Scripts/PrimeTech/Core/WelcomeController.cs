@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace PrimeTech.Core
         public Button buttonWithHololens;
         public Button buttonWithoutHololens;
         public GameObject welcomeScreen;
-        public Text id;
+        //public Text id;
         public int userId;
 
         // Start is called before the first frame update
@@ -28,35 +29,28 @@ namespace PrimeTech.Core
         }
         private void continueWithoutHololens()
         {
-            string url = "http://localhost:64021/connectWithoutHololens";
-            //  string a = null;
+            string url = "http://37.148.210.36:8081/connectWithoutHololens";
             byte[] array = null;
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
             {
+                Debug.Log(statusCode);
                 if (statusCode == 200)
                 {
                     if (responseData != null)
                     {
-                        userId = BitConverter.ToInt32(responseData, 0);
-                        id.GetComponent<Text>().text = userId.ToString();
+                        var p = JsonConvert.DeserializeObject<UserId>(responseText);
+                        userId = int.Parse(p.userId);
+                        SettingsController.SetUserId(userId);
+                        Debug.Log(SettingsController.GetUserId());
                         SceneManager.LoadScene("OptionsUI");
                     }
+                    else
+                    {
+                        SceneManager.LoadScene("Welcome");
+                    }
                 }
-               /* else
-                {
-                    Debug.Log(statusCode);
-                    Debug.Log(responseText);
-                }*/
             };
             HttpRequest.Send(this, "POST", url, null, array, myHandler1);
-        }
-        public void updateId(int newId)
-        {
-            if(newId != 0)
-            {
-                id.GetComponent<Text>().text = newId.ToString();
-            }
-            
         }
     }
 }

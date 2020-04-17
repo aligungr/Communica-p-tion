@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,10 @@ using static HttpRequest;
 
 namespace PrimeTech.Core
 {
+    public class UserId
+    {
+        public string userId;
+    }
     public class PinScreenController : MonoBehaviour
     {
         public GameObject pinArea;
@@ -29,20 +34,22 @@ namespace PrimeTech.Core
         private void validatePin()
         {
             pin = pinArea.GetComponent<InputField>().text;
-            Debug.Log(pin);
-            string url = "http://localhost:64021/connectWithHololens" + pin;
-            // string a = null;
+            Debug.Log(pin);          
+            string url = "http://37.148.210.36:8081/connectWithHololens?pin=" + pin;
             byte[] array = null;
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
              {
+                 Debug.Log(statusCode);
                  if (statusCode == 200)
                  {
                      if (responseData != null)
                      {
-                         userId = BitConverter.ToInt32(responseData, 0);
-                         welcome.updateId(userId);
+                         var p = JsonConvert.DeserializeObject<UserId>(responseText);
+                         userId = int.Parse(p.userId); 
+                         SettingsController.SetUserId(userId);
+                         Debug.Log(SettingsController.GetUserId());
                          SceneManager.LoadScene("OptionsUI");
-                     }
+                     } 
                      else
                      {
                          SceneManager.LoadScene("Welcome");
@@ -50,7 +57,6 @@ namespace PrimeTech.Core
                  }
              };
             HttpRequest.Send(this, "POST", url, null, array, myHandler1);
-
         }
     }
 }
