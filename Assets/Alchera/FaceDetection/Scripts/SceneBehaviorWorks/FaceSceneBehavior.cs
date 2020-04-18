@@ -58,6 +58,7 @@ namespace Alchera
         {
             SceneManager.LoadScene("OptionsUI");
         }
+        
         public void goToGalery()
         { 
             SceneManager.LoadScene("GaleryScene");

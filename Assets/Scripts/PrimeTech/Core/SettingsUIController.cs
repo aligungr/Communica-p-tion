@@ -120,7 +120,6 @@ namespace PrimeTech.Core
             SettingsController.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsController.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
 
-
             string m = SettingsController.GetMode().ToString();
             string lang = SettingsController.GetLanguage().ToString();
             string foreign = SettingsController.GetForeignLanguage().ToString();

@@ -93,8 +93,6 @@ namespace Alchera
                 mirrorX *= -1;
                 mirrorY *= -1;
             }
-
-
         }
         public int GetAdjustedVideoRotationAngle()
         {
