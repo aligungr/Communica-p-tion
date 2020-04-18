@@ -8,9 +8,11 @@ using System;
 using Alchera;
 using System.Threading.Tasks;
 
-namespace PrimeTech.SpeechRecognizer {
+namespace PrimeTech.SpeechRecognizer
+{
 
-    public class SpeechRecognizerController : MonoBehaviour {
+    public class SpeechRecognizerController : MonoBehaviour
+    {
 
         private Text text;
         Translator.Translator translator;
@@ -21,10 +23,11 @@ namespace PrimeTech.SpeechRecognizer {
         bool isFace;
         private void Awake()
         {
-                this.text = GetComponent<Text>();
+            this.text = GetComponent<Text>();
         }
 
-        private void Start() {
+        private void Start()
+        {
             nativeLang = SettingsController.GetLanguage();
             foreignLang = SettingsController.GetForeignLanguage();
             translate = (int)SettingsController.GetTranslateLanguage();
@@ -40,16 +43,18 @@ namespace PrimeTech.SpeechRecognizer {
                 AndroidSpeechRecognizer.StartListening();
             }
         }
-        private void Update() {
+        private void Update()
+        {
             subtitleTrigger = SettingsController.GetSubtitleTrigger();
             if ((int)subtitleTrigger == 2)
             {
-                isFace = GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected; 
+                isFace = GameObject.Find("World").GetComponent<FaceSceneBehavior>().faceDetected;
                 AndroidSpeechRecognizer.StartListening();
             }
         }
 
-        public void SetTextOnScreen(string text) {
+        public void SetTextOnScreen(string text)
+        {
             subtitleTrigger = SettingsController.GetSubtitleTrigger();
             if ((int)subtitleTrigger == 2)
             {
@@ -75,7 +80,7 @@ namespace PrimeTech.SpeechRecognizer {
                     this.text.text = "";
                 }
             }
-            else 
+            else
             {
                 if (foreignLang.ToString() != nativeLang.ToString() && translate == 0) //translate -> 0 = ON ,  translate -> 1 = OFF
                 {

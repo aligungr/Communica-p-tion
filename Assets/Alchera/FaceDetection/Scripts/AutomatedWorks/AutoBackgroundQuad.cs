@@ -12,6 +12,7 @@ namespace Alchera
 
         void Start()
         {
+            Screen.orientation = ScreenOrientation.Portrait;
             Debug.Log(webcamMaterial.ToString());
             transform.localPosition = new Vector3(0, 0, 300);
 

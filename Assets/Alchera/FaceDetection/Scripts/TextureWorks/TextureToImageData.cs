@@ -32,8 +32,8 @@ namespace Alchera
                 );
             return source.Task;
         }
-        
-        IEnumerator ConvertWebcamInMainThread(WebCamTexture webcam, TaskCompletionSource<ImageData> promise) 
+
+        IEnumerator ConvertWebcamInMainThread(WebCamTexture webcam, TaskCompletionSource<ImageData> promise)
         {
             if (pixelBuffer == null || pixelBuffer.Length != webcam.width * webcam.height)
             {

@@ -17,13 +17,13 @@ namespace Alchera
             if (current.isPlaying == false)
                 current.Play();
 
-            StartCoroutine(SendTextureFrom()); 
+            StartCoroutine(SendTextureFrom());
 
-            while (true) 
+            while (true)
             {
                 if (current != null && current.isPlaying)
                 {
-                    yield return promise.Task; 
+                    yield return promise.Task;
                     promise = new TaskCompletionSource<Texture>();
                 }
                 else
@@ -35,8 +35,9 @@ namespace Alchera
         {
             do
             {
-                if (promise != null && current.isPlaying) {
-                    promise.TrySetResult(current as Texture); 
+                if (promise != null && current.isPlaying)
+                {
+                    promise.TrySetResult(current as Texture);
                 }
                 //yield return ws;
                 yield return null;
@@ -46,7 +47,8 @@ namespace Alchera
 
         Task<Texture> ITextureSequence.Capture()
         {
-            if (current.isPlaying == false) {
+            if (current.isPlaying == false)
+            {
                 current.Play();
             }
             var source = new TaskCompletionSource<Texture>();
@@ -68,7 +70,7 @@ namespace Alchera
             StartCoroutine(quad.UpdateQuad());
             StartCoroutine(AfterInit());
         }
-      
+
         new void OnDestroy()
         {
             base.OnDestroy();

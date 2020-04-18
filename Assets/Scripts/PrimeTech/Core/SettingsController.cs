@@ -54,6 +54,15 @@ namespace PrimeTech.Core
             return (TranslateLanguage)PlayerPrefs.GetInt("translateLanguage",(int)TranslateLanguage.OFF);
         }
 
+        public static void SetUserId(int userId)
+        {
+            PlayerPrefs.SetInt("userId", userId);
+        }
+
+        public static int GetUserId()
+        {
+            return PlayerPrefs.GetInt("userId", 0);
+        }
     }
 
 }

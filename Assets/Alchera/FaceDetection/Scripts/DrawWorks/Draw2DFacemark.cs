@@ -42,10 +42,8 @@ namespace Alchera
         {
             if (pool[0] == null || !ReadWebcam.instance.prepared)
             {
-                Debug.Log("pool null doru yerdeyimmm :D");
                 return;
             }
-                
             if (need3D == true)
             {
                 Debug.LogError("Need3D should NOT be checked for using Draw2DFacemark");

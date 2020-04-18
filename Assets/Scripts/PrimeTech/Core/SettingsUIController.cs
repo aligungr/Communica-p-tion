@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using static HttpRequest;
+using System.Dynamic;
 
 namespace PrimeTech.Core
 {
@@ -19,7 +21,7 @@ namespace PrimeTech.Core
 
         public void AddOptionsToMode()
         {
-            mode.AddOptions(new List<string>() {"Speech To Text","Text Detection"});
+            mode.AddOptions(new List<string>() { "Speech To Text", "Text Detection" });
         }
 
         public void AddOptionsToLanguage()
@@ -44,9 +46,9 @@ namespace PrimeTech.Core
 
         public void AddOptionsToTranslateLanguage()
         {
-            translateLanguage.AddOptions(new List<string>() { "ON", "OFF"});
+            translateLanguage.AddOptions(new List<string>() { "ON", "OFF" });
         }
-       
+
         public void OnModeChange()
         {
             if (mode.value == 1)
@@ -91,9 +93,9 @@ namespace PrimeTech.Core
         {
             if (subtitleTrigger.value == 0)
                 Debug.Log("subtitleTrigger value is Always On");
-            else if(subtitleTrigger.value == 1)
+            else if (subtitleTrigger.value == 1)
                 Debug.Log("subtitleTrigger value is ManuallyTriggered");
-            else  
+            else
                 Debug.Log("subtitleTrigger value is If Face Detected");
         }
 
@@ -117,14 +119,35 @@ namespace PrimeTech.Core
             SettingsController.SetForeignLanguage(Language.GetAllLanguages()[foreignLanguage.value]);
             SettingsController.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsController.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
+
+            string m = SettingsController.GetMode().ToString();
+            string lang = SettingsController.GetLanguage().ToString();
+            string foreign = SettingsController.GetForeignLanguage().ToString();
+            string subtitle = SettingsController.GetSubtitleTrigger().ToString();
+            string trans = SettingsController.GetTranslateLanguage().ToString();
+             
+            string url = "http://37.148.210.36:8081/saveSettingsMessage";
+            string json = "{\"Mode\":\""+m+"\",\"NativeLanguageCode\":\"" + lang + "\",\"ForeignLanguageCode\":\"" + foreign + "\",\"SubtitleTrigger\":\"" + subtitle + "\",\"TranslateLanguage\":\"" + trans + "\"}";
             
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("Content-Type", "application/json");
+
+            HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+            {
+                Debug.Log(responseText);
+                Debug.Log(statusCode);
+            };
+            HttpRequest.Send(this, "POST", url, dict, json, myHandler1); 
+            Debug.Log(json);
+
             if (subtitleTrigger.value == 2)
             {
-                Debug.Log("sahneye giriyor");
+                Global.galleryReturnScene = "Face2DFacemark";
                 SceneManager.LoadScene("Face2DFacemark");
             }
             else
             {
+                Global.galleryReturnScene = "MainScreenUI";
                 SceneManager.LoadScene("MainScreenUI");
             }
             //SceneManager.LoadScene("MainScreenUI");

@@ -36,7 +36,7 @@ namespace Alchera
                 if (request == null)
                     continue;
 
-                var texture = await request; 
+                var texture = await request;
                 var image = await converter.Convert(texture);
                 var translator = await detector.Detect(ref image);
 
@@ -48,9 +48,9 @@ namespace Alchera
                 else
                 {
                     faceDetected = false;
-                } 
+                }
                 translator.Dispose();
-                Debug.Log("face state: "+ faceDetected );
+                Debug.Log("face state: " + faceDetected);
                 //faceDetected = false;
             }
         }
@@ -58,7 +58,16 @@ namespace Alchera
         {
             SceneManager.LoadScene("OptionsUI");
         }
+        
+        public void goToGalery()
+        { 
+            SceneManager.LoadScene("GaleryScene");
+        }
 
+        public void goToOcrGalery()
+        {
+            SceneManager.LoadScene("OcrGaleryScene");
+        }
         void OnDestroy()
         {
             sequence.Dispose();
@@ -67,4 +76,3 @@ namespace Alchera
 
     }
 }
-
