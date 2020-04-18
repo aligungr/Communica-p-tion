@@ -40,7 +40,11 @@ namespace Alchera
 
         public void Consume(ref ImageData image, IEnumerable<FaceData> list)
         {
-            if (pool[0] == null || !ReadWebcam.instance.prepared) return; 
+            if (pool[0] == null || !ReadWebcam.instance.prepared)
+            {
+                return;
+            }
+
             if (need3D == true)
             {
                 Debug.LogError("Need3D should NOT be checked for using Draw2DFacemark");
