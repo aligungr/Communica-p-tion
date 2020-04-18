@@ -192,7 +192,7 @@ public class TesseractWrapper
             return null;
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        string recognizedText = Marshal.PtrToStringAnsi (str_ptr);
+        string recognizedText = Marshal.PtrToStringAnsi (stringPtr);
 #else
         string recognizedText = Marshal.PtrToStringAuto(stringPtr);
 #endif
@@ -205,7 +205,7 @@ public class TesseractWrapper
 
         for (i = 0; i < boxes.Length; i++)
         {
-            Debug.Log(words[i] + " -> " + confidence[i]);
+            //Debug.Log(words[i] + " -> " + confidence[i]);
             if (confidence[i] >= MinimumConfidence)
             {
                 result.Append(words[i]);

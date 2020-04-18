@@ -33,7 +33,7 @@ public class CameraScript : MonoBehaviour
             //Debug.Log("Permission result: " + NativeGallery.SaveImageToGallery(snap, Application.productName + " Captures", "Capt_" + capture_count));
 
 
-        }        
+        }
         return snap;
 
     }
