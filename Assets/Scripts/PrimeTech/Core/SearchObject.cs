@@ -18,9 +18,10 @@ public class SearchObject : MonoBehaviour
         HttpRequest.HttpResponseHandler responseHandler = (int statusCode, string responseText, byte[] responseData) => {
             if (statusCode == 200)
             {
+                Debug.Log(responseText);
                 if (responseData != null)
                 {
-                    Debug.Log("TO-DO Search");
+                    //Debug.Log("TO-DO Search");
                 }
             }
         };
@@ -32,10 +33,9 @@ public class SearchObject : MonoBehaviour
         var dictionary = (IDictionary<string, object>)flexible;
         var serializedJson = JsonConvert.SerializeObject(dictionary);
 
-        string url = "http://localhost:64021/search";
+        string url = "http://37.148.210.36:8081/search?json=" + serializedJson;
 
-        HttpRequest.Send(this, "POST", url, null, serializedJson, responseHandler);
-        Debug.Log(keyword + " " + spellCheck);
-        Debug.Log(serializedJson);
+        byte[] array = null;
+        HttpRequest.Send(this, "GET", url, null, array, responseHandler);
     }
 }
