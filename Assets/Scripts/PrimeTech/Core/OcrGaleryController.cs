@@ -27,11 +27,32 @@ namespace PrimeTech.Core
 
         private void loadOcrMedia()
         {
-            /*
-             * The data is taken from the relevant service.
-             */
+            string url = "http://37.148.210.36:8081/gallery?userId=1";
+            byte[] array = null;
+            string downloadData;
+            HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+            {
+                Debug.Log(statusCode);
+                if (statusCode == 200)
+                {
+                    Debug.Log(responseText);
+                    if (responseText != null)
+                    {
+                        downloadData = responseText;
+                        //downloadData = downloadData.Substring(10, downloadData.Length - 12);
+                        Debug.Log(downloadData);
+                        mediaList = JsonConvert.DeserializeObject<List<OcrMedia>>(downloadData);
+                        foreach (var item in mediaList)
+                        {
+                            addItem(item.name, item.picture, item.id);
+                        }
+                    }
+                }
+            };
+            HttpRequest.Send(this, "GET", url, null, array, myHandler1);
+            
 
-            using (StreamReader r = new StreamReader(mediaPath))
+            /*using (StreamReader r = new StreamReader(mediaPath))
             {
                 string json = r.ReadToEnd();
                 mediaList = JsonConvert.DeserializeObject<List<OcrMedia>>(json);
@@ -40,7 +61,7 @@ namespace PrimeTech.Core
                     Debug.Log(item.name);
                     addItem(item.name, item.picture, item.id);
                 }
-            }
+            }*/
 
         }
         void Start()
@@ -79,9 +100,9 @@ namespace PrimeTech.Core
             //copy.GetComponent<Image>().sprite = sprite;
 
 
-
             copy.GetComponent<Button>().onClick.AddListener(() => {
                 Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
+                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
                 //open DetailsScene for copyOfIndex th object
             });
             index++;

@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using static HttpRequest;
+using System.Dynamic;
 
 namespace PrimeTech.Core
 {
@@ -128,13 +129,16 @@ namespace PrimeTech.Core
              
             string url = "http://37.148.210.36:8081/saveSettingsMessage";
             string json = "{\"Mode\":\""+m+"\",\"NativeLanguageCode\":\"" + lang + "\",\"ForeignLanguageCode\":\"" + foreign + "\",\"SubtitleTrigger\":\"" + subtitle + "\",\"TranslateLanguage\":\"" + trans + "\"}";
-            //Debug.Log(json);
+            
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("Content-Type", "application/json");
+
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
             {
                 Debug.Log(responseText);
                 Debug.Log(statusCode);
             };
-            HttpRequest.Send(this, "POST", url, null, json, myHandler1);
+            HttpRequest.Send(this, "POST", url, dict, json, myHandler1); 
             Debug.Log(json);
 
             if (subtitleTrigger.value == 2)
