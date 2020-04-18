@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static HttpRequest;
 
 namespace PrimeTech.Core
 {
+    public class Items
+    {
+        public List<Media> items;
+    }
     public class AddObject : MonoBehaviour
     {
         int index = 0;
@@ -26,44 +31,34 @@ namespace PrimeTech.Core
 
         private void loadMedia()
         {
-            /*string url = "http://localhost:64021/mediaItems/"+userId;
-            byte[] array = null;
-            string downloadData;
-            HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
-            {
-                if (statusCode == 200)
-                {
-                    if (responseData != null)
-                    {
-                        downloadData = Encoding.UTF8.GetString(responseData, 0, responseData.Length);
-                        mediaList = JsonConvert.DeserializeObject<List<Media>>(downloadData);
-                        foreach (var item in mediaList)
-                        {
-                           // Debug.Log(item.name);
-                            addItem(item.name, item.tumbnail, item.id, item.type);
-                        }
-                    }
-                }
-            };
-            HttpRequest.Send(this, "GET", url, null, array, myHandler1);*/
-           
-            using (StreamReader r = new StreamReader(mediaPath))
-            {
-                string json = r.ReadToEnd();
-                mediaList = JsonConvert.DeserializeObject<List<Media>>(json);
-                foreach (var item in mediaList)
-                {
-                    Debug.Log(item.name);
-                    addItem(item.name, item.tumbnail, item.id, item.type);
-                }
-            } 
-            
+             string url = "http://37.148.210.36:8081/mediaItems?userId=" + userId;
+             byte[] array = null;
+             string downloadData;
+             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+             { 
+                 Debug.Log(statusCode);
+                 if (statusCode == 200)
+                 {
+                     Debug.Log(responseText);
+                     if (responseText != null)
+                     {
+                         downloadData = responseText;
+                         downloadData = downloadData.Substring(10, downloadData.Length-12);
+                         Debug.Log(downloadData);
+                         mediaList = JsonConvert.DeserializeObject<List<Media>>(downloadData);
+                         foreach (var item in mediaList)
+                         {
+                              addItem(item.name, item.tumbnail, item.id, item.type);
+                         }
+                     }   
+                 } 
+             };
+             HttpRequest.Send(this, "GET", url, null, array, myHandler1);
+
         }
         void Start()
         {
-            /*welcome = GameObject.FindObjectOfType<WelcomeController>();
-            userId = int.Parse(welcome.id.text);
-            Debug.Log(userId);*/
+            userId = SettingsController.GetUserId();
             loadMedia();
         } 
 
@@ -164,6 +159,12 @@ namespace PrimeTech.Core
                     toastObject.Call("show");
                 }));
             }
+        }
+
+        public void returnClicked()
+        {
+            string sceneName = Global.galleryReturnScene;
+            SceneManager.LoadScene(sceneName);
         }
     }
 }

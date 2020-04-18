@@ -96,6 +96,11 @@ namespace PrimeTech.Core
             Debug.Log("Search button clicked.");
             //SceneManager.LoadScene("SearchScene");
         }
+        public void returnClicked()
+        {
+            string sceneName = Global.galleryReturnScene;
+            SceneManager.LoadScene(sceneName);
+        }
 
     }
 }
