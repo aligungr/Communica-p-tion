@@ -31,30 +31,29 @@ namespace PrimeTech.Core
 
         private void loadMedia()
         {
-            string url = "http://37.148.210.36:8081/mediaItems?userId=" + userId;
-            byte[] array = null;
-            string downloadData;
-            HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
-            {
-                Debug.Log(statusCode);
-                if (statusCode == 200)
-                {
-                    Debug.Log(responseText);
-                    if (responseText != null)
-                    {
-                        downloadData = responseText;
-                        downloadData = downloadData.Substring(10, downloadData.Length - 12);
-                        Debug.Log(downloadData);
-                        mediaList = JsonConvert.DeserializeObject<List<Media>>(downloadData);
-                        foreach (var item in mediaList)
-                        {
-                            addItem(item.fileName, item.thumbnail, item.mediaId);
-                        }
-                    }
-                }
-            };
-            HttpRequest.Send(this, "GET", url, null, array, myHandler1);
-
+             string url = "http://37.148.210.36:8081/mediaItems?userId=" + userId;
+             byte[] array = null;
+             string downloadData;
+             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+             { 
+                 Debug.Log(statusCode);
+                 if (statusCode == 200)
+                 {
+                     Debug.Log(responseText);
+                     if (responseText != null)
+                     {
+                         downloadData = responseText;
+                         downloadData = downloadData.Substring(10, downloadData.Length-12);
+                         Debug.Log(downloadData);
+                         mediaList = JsonConvert.DeserializeObject<List<Media>>(downloadData);
+                         foreach (var item in mediaList)
+                         {
+                              addItem(item.fileName, item.thumbnail, item.mediaId);
+                         }
+                     }   
+                 } 
+             };
+             HttpRequest.Send(this, "GET", url, null, array, myHandler1);
         }
         void Start()
         {
@@ -64,23 +63,22 @@ namespace PrimeTech.Core
 
         public void addItem(string name, string image, string id)
         {
-            /*AndroidJavaClass jc = new AndroidJavaClass("android.os.Environment");
+            AndroidJavaClass jc = new AndroidJavaClass("android.os.Environment");
             string path = jc.CallStatic<AndroidJavaObject>("getExternalStoragePublicDirectory", jc.GetStatic<string>("DIRECTORY_DCIM")).Call<string>("getAbsolutePath");
             path = Path.Combine(path, "CommunicaptionMedias");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            string path2 = path + name;
-            path2 = path2 + ".jpg";*/
-            /* if (!File.Exists(path2))
+            string path2 = path + name + ".jpg";
+             if (!File.Exists(path2))
              {
                  downloaded.GetComponent<Image>().enabled = true;
              }
              else
              {
                  downloaded.GetComponent<Image>().enabled = false;
-             }*/
+             }
 
             var copy = Instantiate(itemTemplate);
             copy.transform.parent = content.transform;
@@ -96,7 +94,7 @@ namespace PrimeTech.Core
 
             copy.GetComponent<Image>().sprite = sprite;
 
-            copy.GetComponent<Button>().onClick.AddListener(() => {
+            copy.GetComponent<Button>().onClick.AddListener(() => { 
                 Debug.Log("Index number " + mediaList[copyOfIndex].fileName + copyOfIndex);
                 downloadMedia(copyOfIndex);
             });
@@ -104,7 +102,7 @@ namespace PrimeTech.Core
         }
         private void downloadMedia(int i)
         {
-            string url = "http://37.148.210.36:8081/media?userId=" + userId + "&mediaId=" + mediaList[i].mediaId;
+            string url = "http://37.148.210.36:8081/media?userId=" + userId+ "&mediaId=" + mediaList[i].mediaId;
             byte[] array = null;
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
             {
@@ -120,8 +118,7 @@ namespace PrimeTech.Core
                         {
                             Directory.CreateDirectory(path);
                         }
-                        string path2 = path + mediaList[i].fileName;
-                        path2 = path2 + ".jpg";
+                        string path2 = path + mediaList[i].fileName + ".jpg";
                         if (!File.Exists(path2))
                         {
                             File.WriteAllBytes(path2, itemBGBytes);

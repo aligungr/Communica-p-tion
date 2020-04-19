@@ -6,11 +6,9 @@ using UnityEngine;
 namespace PrimeTech.Core
 {
     [Serializable]
-    public class OcrMedia
+    public class Result
     {
-        public string artId;
-        public string title;
-        public string picture;
-        public string text;
+        public string Text;
+        public string ArtId;
     }
 }

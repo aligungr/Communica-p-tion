@@ -27,7 +27,7 @@ namespace PrimeTech.Core
 
         private void loadOcrMedia()
         {
-            string url = "http://37.148.210.36:8081/gallery?userId=1";
+            string url = "http://37.148.210.36:8081/gallery?userId="+ userId;
             byte[] array = null;
             string downloadData;
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
@@ -44,31 +44,17 @@ namespace PrimeTech.Core
                         mediaList = JsonConvert.DeserializeObject<List<OcrMedia>>(downloadData);
                         foreach (var item in mediaList)
                         {
-                            addItem(item.name, item.picture, item.id);
+                            addItem(item.title, item.picture, item.artId);
                         }
                     }
                 }
             };
             HttpRequest.Send(this, "GET", url, null, array, myHandler1);
-            
-
-            /*using (StreamReader r = new StreamReader(mediaPath))
-            {
-                string json = r.ReadToEnd();
-                mediaList = JsonConvert.DeserializeObject<List<OcrMedia>>(json);
-                foreach (var item in mediaList)
-                {
-                    Debug.Log(item.name);
-                    addItem(item.name, item.picture, item.id);
-                }
-            }*/
 
         }
         void Start()
         {
-            /*welcome = GameObject.FindObjectOfType<WelcomeController>();
-            userId = int.Parse(welcome.id.text);
-            Debug.Log(userId);*/
+            userId = SettingsController.GetUserId();
             loadOcrMedia();
         }
 
@@ -101,21 +87,21 @@ namespace PrimeTech.Core
 
 
             copy.GetComponent<Button>().onClick.AddListener(() => {
-                Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
-                //Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
-                //open DetailsScene for copyOfIndex th object
+                Debug.Log("Index number " + mediaList[copyOfIndex].title + copyOfIndex);
+                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].artId);
+                Global.detailsOrAdd = false;
+                SceneManager.LoadScene("DetailsScene");
             });
             index++;
         }
         public void clickedAddButton()
         {
-            Debug.Log("Add object button clicked.");
-            //SceneManager.LoadScene("AddOcrObjectScene");
+            Global.detailsOrAdd = true;
+            SceneManager.LoadScene("DetailsScene");
         }
         public void clickedSearchButton()
         {
-            Debug.Log("Search button clicked.");
-            //SceneManager.LoadScene("SearchScene");
+            SceneManager.LoadScene("SearchScreen");
         }
         public void returnClicked()
         {
