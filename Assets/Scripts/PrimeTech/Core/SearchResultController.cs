@@ -28,18 +28,14 @@ namespace PrimeTech.Core
  
         private void loadMedia()
         {
-
-            using (StreamReader r = new StreamReader(mediaPath))
+            string json = Global.searchResult;
+            //Debug.Log(json); 
+            string downloadData = json.Substring(11, json.Length - 13);
+            mediaList = JsonConvert.DeserializeObject<List<Result>>(downloadData); 
+            foreach (var item in mediaList)
             {
-                string json = r.ReadToEnd();
-                Debug.Log(json); 
-                string downloadData = json.Substring(11, json.Length - 13);
-                mediaList = JsonConvert.DeserializeObject<List<Result>>(downloadData); 
-                foreach (var item in mediaList)
-                {
-                    Debug.Log(item.ArtId);
-                    addItem(item.Text, item.ArtId);
-                }
+                //Debug.Log(item.ArtId);
+                addItem(item.Text, item.ArtId);
             }
 
         }
@@ -57,13 +53,6 @@ namespace PrimeTech.Core
 
             copy.GetComponentInChildren<Text>().text = text;
             int copyOfIndex = index;
-
-            /*byte[] imageBytes = Convert.FromBase64String(image);
-            Texture2D tex = new Texture2D(2, 2);
-            tex.LoadImage(imageBytes);
-            Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);*/
-
-           // copy.GetComponent<Image>().sprite = sprite;
 
             copy.GetComponent<Button>().onClick.AddListener(() => {
                 Debug.Log("Index number " + mediaList[copyOfIndex].ArtId + copyOfIndex);

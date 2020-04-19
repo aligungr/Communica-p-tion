@@ -27,7 +27,7 @@ namespace PrimeTech.Core
 
         private void loadOcrMedia()
         {
-            string url = "http://37.148.210.36:8081/gallery?userId=1";
+            string url = "http://37.148.210.36:8081/gallery?userId="+ userId;
             byte[] array = null;
             string downloadData;
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
@@ -50,25 +50,11 @@ namespace PrimeTech.Core
                 }
             };
             HttpRequest.Send(this, "GET", url, null, array, myHandler1);
-            
-
-            /*using (StreamReader r = new StreamReader(mediaPath))
-            {
-                string json = r.ReadToEnd();
-                mediaList = JsonConvert.DeserializeObject<List<OcrMedia>>(json);
-                foreach (var item in mediaList)
-                {
-                    Debug.Log(item.name);
-                    addItem(item.name, item.picture, item.id);
-                }
-            }*/
 
         }
         void Start()
         {
-            /*welcome = GameObject.FindObjectOfType<WelcomeController>();
-            userId = int.Parse(welcome.id.text);
-            Debug.Log(userId);*/
+            userId = SettingsController.GetUserId();
             loadOcrMedia();
         }
 
@@ -110,13 +96,11 @@ namespace PrimeTech.Core
         }
         public void clickedAddButton()
         {
-            //Debug.Log("Add object button clicked.");
             Global.detailsOrAdd = true;
             SceneManager.LoadScene("DetailsScene");
         }
         public void clickedSearchButton()
         {
-            //Debug.Log("Search button clicked.");
             SceneManager.LoadScene("SearchScreen");
         }
         public void returnClicked()
