@@ -29,6 +29,7 @@ namespace Alchera
             detector = GetComponent<IDetectService>();
             consumer = FaceConsumer.GetComponent<IFaceListConsumer>();
 
+     
             IEnumerable<FaceData> faces = null;
 
             foreach (Task<Texture> request in sequence.Repeat())
@@ -58,7 +59,6 @@ namespace Alchera
         {
             SceneManager.LoadScene("OptionsUI");
         }
-        
         public void goToGalery()
         { 
             SceneManager.LoadScene("GaleryScene");
