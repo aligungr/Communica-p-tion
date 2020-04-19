@@ -266,7 +266,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 110420147}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 867953360}
+        m_MethodName: ImageFiveClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &110420147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1465,7 +1476,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 819411216}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 867953360}
+        m_MethodName: ImageTwoClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &819411216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,7 +1879,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 870866508}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 867953360}
+        m_MethodName: ImageSixClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &870866508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2592,7 +2625,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1208743893}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 867953360}
+        m_MethodName: ImageOneClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1208743893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3802,7 +3846,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1987248868}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 867953360}
+        m_MethodName: ImageThreeClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1987248868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3919,7 +3974,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2053277567}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 867953360}
+        m_MethodName: ImageFourClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2053277567
 MonoBehaviour:
   m_ObjectHideFlags: 0

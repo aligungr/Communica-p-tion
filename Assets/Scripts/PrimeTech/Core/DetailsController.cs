@@ -45,7 +45,7 @@ public class DetailsController : MonoBehaviour
 
     private void loadMedia()
     {
-        string url = "http://localhost:64021/getDetails?artId=" + Global.detailedItemId.ToString();
+        string url = "http://37.148.210.36:8081/getDetails?artId=" + Global.detailedItemId.ToString();
         byte[] array = null;
         string dataString;
        
@@ -289,6 +289,56 @@ public class DetailsController : MonoBehaviour
     {
         Debug.Log(recommendations[2].url);
         Application.OpenURL(recommendations[2].url);
+    }
+
+    public void ImageOneClicked()
+    {
+        if(mediaList.Count != 0)
+        {
+            Global.bigResizedPicture = mediaList[0].thumbnail;
+            SceneManager.LoadScene("BigPictureScene");
+        }
+       
+    }
+    public void ImageTwoClicked()
+    {
+        if (mediaList.Count != 0)
+        {
+            Global.bigResizedPicture = mediaList[1].thumbnail;
+            SceneManager.LoadScene("BigPictureScene");
+        }
+    }
+    public void ImageThreeClicked()
+    {
+        if (mediaList.Count != 0)
+        {
+            Global.bigResizedPicture = mediaList[2].thumbnail;
+            SceneManager.LoadScene("BigPictureScene");
+        }
+    }
+    public void ImageFourClicked()
+    {
+        if (mediaList.Count != 0)
+        {
+            Global.bigResizedPicture = mediaList[3].thumbnail;
+            SceneManager.LoadScene("BigPictureScene");
+        }
+    }
+    public void ImageFiveClicked()
+    {
+        if (mediaList.Count != 0)
+        {
+            Global.bigResizedPicture = mediaList[4].thumbnail;
+            SceneManager.LoadScene("BigPictureScene");
+        }
+    }
+    public void ImageSixClicked()
+    {
+        if (mediaList.Count != 0)
+        {
+            Global.bigResizedPicture = mediaList[5].thumbnail;
+            SceneManager.LoadScene("BigPictureScene");
+        }
     }
 
 }
