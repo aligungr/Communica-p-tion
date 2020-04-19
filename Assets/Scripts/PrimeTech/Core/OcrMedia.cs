@@ -8,9 +8,9 @@ namespace PrimeTech.Core
     [Serializable]
     public class OcrMedia
     {
-        public string name;
+        public string artId;
+        public string title;
         public string picture;
-        public string id;
         public string text;
     }
 }

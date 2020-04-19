@@ -44,7 +44,7 @@ namespace PrimeTech.Core
                         mediaList = JsonConvert.DeserializeObject<List<OcrMedia>>(downloadData);
                         foreach (var item in mediaList)
                         {
-                            addItem(item.name, item.picture, item.id);
+                            addItem(item.title, item.picture, item.artId);
                         }
                     }
                 }
@@ -87,8 +87,8 @@ namespace PrimeTech.Core
 
 
             copy.GetComponent<Button>().onClick.AddListener(() => {
-                Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
-                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
+                Debug.Log("Index number " + mediaList[copyOfIndex].title + copyOfIndex);
+                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].artId);
                 Global.detailsOrAdd = false;
                 SceneManager.LoadScene("DetailsScene");
             });
