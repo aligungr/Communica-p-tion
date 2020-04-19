@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -379,11 +379,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 246166472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0739ebd67c0b194aaf49611dfdfc787, type: 3}
+  m_Script: {fileID: 11500000, guid: 1cc476710c7d62a479bb82d7214a1bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemTemplate: {fileID: 808879898}
   content: {fileID: 1779454689}
+  searchWord: {fileID: 1992842582}
   userId: 0
   mediaPath: C://Users//User//Desktop//ocr-test3.json
   mediaList: []
@@ -1382,7 +1383,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1829903739}
   m_TextComponent: {fileID: 1424331992}
   m_Placeholder: {fileID: 1992842584}

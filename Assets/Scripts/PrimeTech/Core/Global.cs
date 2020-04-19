@@ -7,4 +7,5 @@ public class Global
     public static string galleryReturnScene;
     public static string searchWord;
     public static int detailedItemId;
+    public static bool detailsOrAdd;//for details screen, if add new object => true, if show object details => false
 }

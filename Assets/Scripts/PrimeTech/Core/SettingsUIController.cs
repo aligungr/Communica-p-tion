@@ -120,16 +120,24 @@ namespace PrimeTech.Core
             SettingsController.SetSubtitleTrigger((SubtitleTrigger)subtitleTrigger.value);
             SettingsController.SetTranslateLanguage((TranslateLanguage)translateLanguage.value);
 
+
             string m = SettingsController.GetMode().ToString();
             string lang = SettingsController.GetLanguage().ToString();
             string foreign = SettingsController.GetForeignLanguage().ToString();
             string subtitle = SettingsController.GetSubtitleTrigger().ToString();
             string trans = SettingsController.GetTranslateLanguage().ToString();
-             
+
+            mode.value = (int)SettingsController.GetMode();
+            language.value = Language.GetAllLanguages().IndexOf(SettingsController.GetLanguage());
+            foreignLanguage.value = Language.GetAllLanguages().IndexOf(SettingsController.GetForeignLanguage());
+            subtitleTrigger.value = (int)SettingsController.GetSubtitleTrigger();
+            translateLanguage.value = (int)SettingsController.GetTranslateLanguage();
+
             string url = "http://37.148.210.36:8081/saveSettingsMessage";
-            string json = "{\"Mode\":\""+m+"\",\"NativeLanguageCode\":\"" + lang + "\",\"ForeignLanguageCode\":\"" + foreign + "\",\"SubtitleTrigger\":\"" + subtitle + "\",\"TranslateLanguage\":\"" + trans + "\"}";
-            
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            //  string json = "{\"Mode\":\""+m+"\",\"NativeLanguageCode\":\"" + lang + "\",\"ForeignLanguageCode\":\"" + foreign + "\",\"SubtitleTrigger\":\"" + subtitle + "\",\"TranslateLanguage\":\"" + trans + "\"}";
+            string json = "{\"Mode\":\"" + mode.value + "\",\"NativeLanguageCode\":\"" + lang + "\",\"ForeignLanguageCode\":\"" + foreign + "\",\"SubtitleTrigger\":\"" + subtitleTrigger.value + "\",\"TranslateLanguage\":\"" + translateLanguage.value + "\"}";
+
+            Dictionary<string, string> dict = new Dictionary<string, string>(); 
             dict.Add("Content-Type", "application/json");
 
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
@@ -137,7 +145,7 @@ namespace PrimeTech.Core
                 Debug.Log(responseText);
                 Debug.Log(statusCode);
             };
-            HttpRequest.Send(this, "POST", url, dict, json, myHandler1); 
+            HttpRequest.Send(this, "POST", url, dict, json, myHandler1);
             Debug.Log(json);
 
             if (subtitleTrigger.value == 2)

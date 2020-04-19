@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static HttpRequest;
 
@@ -14,6 +15,8 @@ namespace PrimeTech.Core
         int index = 0;
         public GameObject itemTemplate;
         public GameObject content;
+
+        public GameObject searchWord;
 
         private WelcomeController welcome;
         public int userId;
@@ -43,9 +46,7 @@ namespace PrimeTech.Core
         }
         void Start()
         {
-            /*welcome = GameObject.FindObjectOfType<WelcomeController>();
-            userId = int.Parse(welcome.id.text);
-            Debug.Log(userId);*/
+            searchWord.GetComponent<Text>().text = Global.searchWord;   
             loadMedia();
         }
 
@@ -67,7 +68,9 @@ namespace PrimeTech.Core
 
             copy.GetComponent<Button>().onClick.AddListener(() => {
                 Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
-                //do something copyOfIndex th index object 
+                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
+                Global.detailsOrAdd = false;
+                SceneManager.LoadScene("DetailsScene");
             });
             index++;
         }

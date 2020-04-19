@@ -103,19 +103,21 @@ namespace PrimeTech.Core
             copy.GetComponent<Button>().onClick.AddListener(() => {
                 Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
                 Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
-                //open DetailsScene for copyOfIndex th object
+                Global.detailsOrAdd = false;
+                SceneManager.LoadScene("DetailsScene");
             });
             index++;
         }
         public void clickedAddButton()
         {
-            Debug.Log("Add object button clicked.");
-            //SceneManager.LoadScene("AddOcrObjectScene");
+            //Debug.Log("Add object button clicked.");
+            Global.detailsOrAdd = true;
+            SceneManager.LoadScene("DetailsScene");
         }
         public void clickedSearchButton()
         {
-            Debug.Log("Search button clicked.");
-            //SceneManager.LoadScene("SearchScene");
+            //Debug.Log("Search button clicked.");
+            SceneManager.LoadScene("SearchScreen");
         }
         public void returnClicked()
         {

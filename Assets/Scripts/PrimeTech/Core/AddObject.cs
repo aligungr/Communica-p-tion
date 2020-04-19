@@ -111,7 +111,7 @@ namespace PrimeTech.Core
         }
         private void downloadMedia(int i)
         {
-            string url = "http://localhost:64021/media/"+ userId + "/" + mediaList[i].id;
+            string url = "http://37.148.210.36:8081/media?userId=" + userId+ "&mediaId=" + mediaList[i].id;
             byte[] array = null;
             HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
             {
