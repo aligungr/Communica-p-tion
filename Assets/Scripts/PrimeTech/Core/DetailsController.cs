@@ -24,6 +24,8 @@ public class DetailsController : MonoBehaviour
     public GameObject OCRText;
     public GameObject WikiButton;
     public Text wikiText;
+
+    public GameObject[] RecommendList;
     public GameObject RecommendationOne;
     public GameObject RecommendationTwo;
     public GameObject RecommendationThree;
@@ -93,18 +95,18 @@ public class DetailsController : MonoBehaviour
                     else
                     {
                         int indexRec = 0;
-                        foreach (var media in mediaList)
+                        foreach (var recommendation in recommendations)
                         {
-                            addItems(media, ImgList[indexRec]);
+                            addRecommendation(recommendation, RecommendList[indexRec]);
                             indexRec++;
                         }
 
-                        if(index == 1)
+                        if(indexRec == 1)
                         {
                             RecommendationTwo.SetActive(false);
                             RecommendationThree.SetActive(false);
                         }
-                        else if (index == 2)
+                        else if (indexRec == 2)
                             RecommendationThree.SetActive(false);
 
                     }
@@ -125,10 +127,18 @@ public class DetailsController : MonoBehaviour
         ImgX.GetComponent<Image>().sprite = spriteImg;
     }
 
-    void Start()
+    private void addRecommendation(Recommendation recommendation, GameObject ImgX)
     {
-        Global.detailsOrAdd = true;
+        byte[] imageBytes = Convert.FromBase64String(recommendation.picture);
+        Texture2D tex = new Texture2D(2, 2);
+        tex.LoadImage(imageBytes);
+        Sprite spriteImg = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f));
 
+        ImgX.GetComponent<Image>().sprite = spriteImg;
+    }
+
+    void Start()
+    {   
         fillImgList();
         OCRText = GameObject.Find("OCRText");
         WikiButton = GameObject.Find("WikiButton");
@@ -220,6 +230,7 @@ public class DetailsController : MonoBehaviour
     void fillImgList()
     {
         ImgList = new GameObject[6];
+        RecommendList = new GameObject[3];
 
         ImgOne = GameObject.Find("ImgOne");
         ImgTwo = GameObject.Find("ImgTwo");
@@ -233,7 +244,15 @@ public class DetailsController : MonoBehaviour
         ImgList[2] = ImgThree;
         ImgList[3] = ImgFour;
         ImgList[4] = ImgFive;
-        ImgList[5] = ImgSix;     
+        ImgList[5] = ImgSix;
+
+        RecommendationOne = GameObject.Find("RecommendationOne");
+        RecommendationTwo = GameObject.Find("RecommendationTwo");
+        RecommendationThree = GameObject.Find("RecommendationThree");
+
+        RecommendList[0] = RecommendationOne;
+        RecommendList[1] = RecommendationTwo;
+        RecommendList[2] = RecommendationThree;
     }
 
     public void addPhoto()
@@ -248,5 +267,28 @@ public class DetailsController : MonoBehaviour
         SceneManager.LoadScene("Ocr");
     }
 
-   
+    public void openWikipedi()
+    {
+        Debug.Log(wikiText.text);
+        Application.OpenURL(wikiText.text);
+    }
+
+    public void openRecommendationOne()
+    {
+        Debug.Log(recommendations[0].url);
+        Application.OpenURL(recommendations[0].url);
+    }
+
+    public void openRecommendationTwo()
+    {
+        Debug.Log(recommendations[1].url);
+        Application.OpenURL(recommendations[1].url);
+    }
+
+    public void openRecommendationThree()
+    {
+        Debug.Log(recommendations[2].url);
+        Application.OpenURL(recommendations[2].url);
+    }
+
 }
