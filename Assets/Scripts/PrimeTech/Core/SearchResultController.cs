@@ -22,24 +22,23 @@ namespace PrimeTech.Core
         public int userId;
 
         [SerializeField]
-        private string mediaPath = "C://Users//User//Desktop//ocr-test3.json";
+        private string mediaPath = "C://Users//User//Desktop//test-result.json";
         [SerializeField]
-        private List<OcrMedia> mediaList;
-
+        private List<Result> mediaList;
+ 
         private void loadMedia()
         {
-            /*
-             * Search result data is obtained from the relevant service.
-             */
 
             using (StreamReader r = new StreamReader(mediaPath))
             {
                 string json = r.ReadToEnd();
-                mediaList = JsonConvert.DeserializeObject<List<OcrMedia>>(json);
+                Debug.Log(json); 
+                string downloadData = json.Substring(11, json.Length - 13);
+                mediaList = JsonConvert.DeserializeObject<List<Result>>(downloadData); 
                 foreach (var item in mediaList)
                 {
-                    Debug.Log(item.name);
-                    addItem(item.name, item.picture, item.id);
+                    Debug.Log(item.ArtId);
+                    addItem(item.Text, item.ArtId);
                 }
             }
 
@@ -50,25 +49,25 @@ namespace PrimeTech.Core
             loadMedia();
         }
 
-        public void addItem(string name, string image, string id)
+        public void addItem(string text, string ArtId)
         {
             var copy = Instantiate(itemTemplate);
             copy.transform.parent = content.transform;
             copy.transform.localPosition = Vector3.zero;
 
-            copy.GetComponentInChildren<Text>().text = name;
+            copy.GetComponentInChildren<Text>().text = text;
             int copyOfIndex = index;
 
-            byte[] imageBytes = Convert.FromBase64String(image);
+            /*byte[] imageBytes = Convert.FromBase64String(image);
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(imageBytes);
-            Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+            Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);*/
 
            // copy.GetComponent<Image>().sprite = sprite;
 
             copy.GetComponent<Button>().onClick.AddListener(() => {
-                Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
-                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
+                Debug.Log("Index number " + mediaList[copyOfIndex].ArtId + copyOfIndex);
+                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].ArtId);
                 Global.detailsOrAdd = false;
                 SceneManager.LoadScene("DetailsScene");
             });

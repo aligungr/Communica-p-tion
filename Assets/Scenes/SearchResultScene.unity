@@ -386,7 +386,7 @@ MonoBehaviour:
   content: {fileID: 1779454689}
   searchWord: {fileID: 1992842582}
   userId: 0
-  mediaPath: C://Users//User//Desktop//ocr-test3.json
+  mediaPath: C://Users//User//Desktop//test-result.json
   mediaList: []
 --- !u!1 &392531824
 GameObject:
