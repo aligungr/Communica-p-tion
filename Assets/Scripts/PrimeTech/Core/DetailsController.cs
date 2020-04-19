@@ -177,6 +177,8 @@ public class DetailsController : MonoBehaviour
                 {
                     var artId = (int)JObject.Parse(responseText)["artId"];
                     Global.detailedItemId = artId;
+                    Global.detailsOrAdd = false;
+                    SceneManager.LoadScene("GaleryScene");
                 }
             }
         };
