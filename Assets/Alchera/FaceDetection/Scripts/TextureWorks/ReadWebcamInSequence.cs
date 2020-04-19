@@ -12,6 +12,7 @@ namespace Alchera
         WaitForSeconds ws = new WaitForSeconds(0.05f);
         IEnumerable<Task<Texture>> ITextureSequence.Repeat()
         {
+
             promise = new TaskCompletionSource<Texture>();
 
             if (current.isPlaying == false)

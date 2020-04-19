@@ -18,10 +18,7 @@ public class MainScreenUIController : MonoBehaviour
 
     public RawImage display;
     public Texture background;
-    public Text startStopText;
-    public AspectRatioFitter fit;
     public Button ManualSpeech;
-    WebCamDevice device;
 
     public Text text;
 
@@ -42,40 +39,9 @@ public class MainScreenUIController : MonoBehaviour
         SceneManager.LoadScene("OptionsUI");
     }
 
-    public  void StartStopCamClicked()
-    {
-        if(tex != null)
-        {
-            StopWebCam();
-            startStopText.text = "Start Camera";
-        }
-        else
-        {
-            device = WebCamTexture.devices[currentCamIndex];
-            tex = new WebCamTexture(device.name);
-            display.texture = tex;
-            
-            float ratio = tex.width / tex.height;
-            fit.aspectRatio = ratio;
-
-            float antiRotate = -(270 - tex.videoRotationAngle) + 180;
- 
-            Quaternion quatRot = new Quaternion();
-            quatRot.eulerAngles = new Vector3(0, 0, antiRotate);
-
-            display.transform.rotation = quatRot;
-
-            tex.Play();
-            startStopText.text = "Stop Camera";
-        }
-        
-    }
-
-    private void StopWebCam()
+    private void StartScreen()
     {
         display.texture = background;
-        tex.Stop();
-        tex = null;
     }
 
     // Start is called before the first frame update
@@ -85,7 +51,7 @@ public class MainScreenUIController : MonoBehaviour
         {
             ManualSpeech.gameObject.SetActive(false);
         }
-        StartStopCamClicked();
+        StartScreen();
     }
 
     public void StartSpeechManually()

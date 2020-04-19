@@ -77,6 +77,8 @@ namespace Alchera
 #endif
                 i++;
             }
+
+            isCameraFront = false; 
             current = rear;//(front == null) ? rear : front; 
             print($"current Camera : {current.deviceName}");
         }
@@ -91,8 +93,10 @@ namespace Alchera
             if (isCameraFront)
             {
                 mirrorX *= -1;
-                mirrorY *= -1;
+               // mirrorY *= -1;
             }
+
+
         }
         public int GetAdjustedVideoRotationAngle()
         {
