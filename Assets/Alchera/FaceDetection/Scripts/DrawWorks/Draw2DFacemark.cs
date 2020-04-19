@@ -44,6 +44,7 @@ namespace Alchera
             {
                 return;
             }
+
             if (need3D == true)
             {
                 Debug.LogError("Need3D should NOT be checked for using Draw2DFacemark");
@@ -55,12 +56,8 @@ namespace Alchera
             foreach (var item in list)
             {
                 face = item;
-                if(face.HeadPose == null)
-                {
-                    Debug.Log("kafa pozu yokkkk");
-                }
                 pool[i].transform.localScale = Vector3.one;
-                Faces[i].UseFaceData(ref image, ref face); 
+                Faces[i].UseFaceData(ref image, ref face);
                 i++;
             }
             for (; i < maxCount; i++)
