@@ -40,24 +40,26 @@ namespace Alchera
         {
             var RequestWidth = 1280;
             var RequestHeight = 720;
-            var RequestedFPS = 120; 
+            var RequestedFPS = 120;
             prepared = false;
             devices = WebCamTexture.devices;
             CamerasFR = new bool[Mathf.Min(devices.Length, 2)];
-            int i=0;
+            int i = 0;
             foreach (var device in devices)
             {
                 print($"{device.name} {device.isFrontFacing}");
-                if (front != null && rear != null) break; 
+                if (front != null && rear != null) break;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-                if (front == null){ 
+                if (front == null)
+                {
                     front = new WebCamTexture(device.name, RequestWidth, RequestHeight, RequestedFPS);
                     CamerasFR[i] = true;
                     FRIndex = i;
                     isCameraFront = CamerasFR[i];
                 }
-                else { 
+                else
+                {
                     rear = new WebCamTexture(device.name, RequestWidth, RequestHeight, RequestedFPS);
                     CamerasFR[i] = true;
                 }
@@ -80,14 +82,17 @@ namespace Alchera
         }
         protected bool GetNextCameraFR()
         {
-            return CamerasFR[(++FRIndex) % 2]; 
+            return CamerasFR[(++FRIndex) % 2];
         }
         public void GetMirrorValue(out int mirrorX, out int mirrorY)
         {
             mirrorX = -1;
             mirrorY = -1;
             if (isCameraFront)
+            {
                 mirrorX *= -1;
+                mirrorY *= -1;
+            }
         }
         public int GetAdjustedVideoRotationAngle()
         {

@@ -7,18 +7,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Alchera;
+using System.Threading.Tasks;
 
 public class MainScreenUIController : MonoBehaviour
 {
     int currentCamIndex = 0;
 
-    WebCamTexture tex;
+    public WebCamTexture tex;
 
     public RawImage display;
     public Texture background;
     public Button ManualSpeech;
 
     public Text text;
+
+
+    private SubtitleTrigger subtitleTrigger;
+    ITextureSequence sequence;
+    ITextureConverter converter;
+    IDetectService detector;
+    public bool faceDetected;
 
     private void Awake()
     {
@@ -52,6 +61,15 @@ public class MainScreenUIController : MonoBehaviour
         AndroidSpeechRecognizer.StartListening();
     }
 
+    public void goToGalery()
+    {
+        SceneManager.LoadScene("GaleryScene");
+    }
+
+    public void goToOcrGalery()
+    {
+        SceneManager.LoadScene("OcrGaleryScene");
+    }
     // Update is called once per frame
     void Update()
     {
