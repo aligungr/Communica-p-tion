@@ -5,25 +5,28 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Welcome.unity
     guid: 7f05e8a03de810f458faf94f000cba89
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Pin.unity
     guid: a810ea496a80a7b41820a10aaefcf1c0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OptionsUI.unity
     guid: 7f373577e1fb24ac0a4433c37af4f129
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScreenUI.unity
     guid: 17ab4072cb735b14eb1400519e79730c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GaleryScene.unity
     guid: 7f470efe5ba449048807423e0f9f669a
-  - enabled: 1
-    path: Assets/Scenes/OcrGaleryScene.unity
-    guid: e396a45591d2ef8439d32dcea292604f
-  - enabled: 1
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/Face2DFacemark.unity
     guid: 89ef08df89954f942b022d98f3f0dcf9
+  - enabled: 1
+    path: Assets/Scenes/Ocr.unity
+    guid: 3b4623928e193493b8c2c3fd1624139c
   m_configObjects: {}

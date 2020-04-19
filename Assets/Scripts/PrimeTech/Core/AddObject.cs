@@ -54,13 +54,12 @@ namespace PrimeTech.Core
                  } 
              };
              HttpRequest.Send(this, "GET", url, null, array, myHandler1);
-
         }
         void Start()
         {
             userId = SettingsController.GetUserId();
             loadMedia();
-        } 
+        }
 
         public void addItem(string name, string image, string id)
         {
@@ -87,7 +86,7 @@ namespace PrimeTech.Core
 
             copy.GetComponentInChildren<Text>().text = name;
             int copyOfIndex = index;
-            
+
             byte[] imageBytes = Convert.FromBase64String(image);
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(imageBytes);
