@@ -6,4 +6,7 @@ public class Global
 {
     public static string galleryReturnScene;
     public static string searchWord;
+    public static int detailedItemId;
+    public static bool mediaOrText;
+   
 }

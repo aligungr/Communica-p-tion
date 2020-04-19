@@ -102,7 +102,7 @@ namespace PrimeTech.Core
 
             copy.GetComponent<Button>().onClick.AddListener(() => {
                 Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
-                Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
+                //Global.detailedItemId = int.Parse(mediaList[copyOfIndex].id);
                 //open DetailsScene for copyOfIndex th object
             });
             index++;
