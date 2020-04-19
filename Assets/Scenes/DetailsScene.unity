@@ -550,20 +550,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-<<<<<<< HEAD
   m_Color: {r: 0.507209, g: 0.6137594, b: 0.7735849, a: 0.65882355}
-=======
-  m_Color: {r: 0.507209, g: 0.6137594, b: 0.7735849, a: 0.392}
->>>>>>> origin/master
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-<<<<<<< HEAD
   m_Sprite: {fileID: 21300000, guid: 75f3ca854acf3b547957d1fa04d35e97, type: 3}
-=======
-  m_Sprite: {fileID: 21300000, guid: e0430266894454f4797c4c68050af001, type: 3}
->>>>>>> origin/master
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1555,7 +1547,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849721618}
   m_CullTransparentMesh: 0
-<<<<<<< HEAD
 --- !u!1 &867953359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,8 +1598,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> origin/master
 --- !u!1 &870866505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,11 +1634,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-<<<<<<< HEAD
   m_AnchoredPosition: {x: 105.6, y: 158.80002}
-=======
-  m_AnchoredPosition: {x: 105.6, y: 161.7}
->>>>>>> origin/master
   m_SizeDelta: {x: 67.39, y: 67.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &870866507
@@ -1859,11 +1844,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-<<<<<<< HEAD
   m_Sprite: {fileID: 21300000, guid: 5a29deb3f8430b847ab30870c6292eed, type: 3}
-=======
-  m_Sprite: {fileID: 21300000, guid: 07bc1e0faf90901409bac9adbfa63e09, type: 3}
->>>>>>> origin/master
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2895,11 +2876,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-<<<<<<< HEAD
   m_Sprite: {fileID: 21300000, guid: 5a29deb3f8430b847ab30870c6292eed, type: 3}
-=======
-  m_Sprite: {fileID: 21300000, guid: 11013487c0bc0774fa919951ad53329b, type: 3}
->>>>>>> origin/master
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
