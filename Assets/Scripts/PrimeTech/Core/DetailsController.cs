@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PrimeTech.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static HttpRequest;
 
 public class DetailsController : MonoBehaviour
 {
@@ -17,66 +21,200 @@ public class DetailsController : MonoBehaviour
     public GameObject ImgFive;
     public GameObject ImgSix;
 
-    [SerializeField]
-    private string mediaPath = "C://Users//catal//Desktop//imges//test2.json";
+    public GameObject OCRText;
+    public GameObject WikiButton;
+    public Text wikiText;
+    public GameObject RecommendationOne;
+    public GameObject RecommendationTwo;
+    public GameObject RecommendationThree;
+
+    public GameObject ArtTitle;
+    public GameObject ArtTitleLabel;
+    public GameObject CreateArtButton;
+
     [SerializeField]
     private List<Media> mediaList;
+    [SerializeField]
+    private string ocrText;
+    [SerializeField]
+    private string wikipedia;
+    [SerializeField]
+    private List<Recommendation> recommendations;
+
     private void loadMedia()
     {
-        /*string url = "http://localhost:64021/mediaItems/"+userId;
+        string url = "http://localhost:64021/getDetails?artId=" + Global.detailedItemId.ToString();
         byte[] array = null;
-        string downloadData;
+        string dataString;
+       
         HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
         {
+            Debug.Log(statusCode);
+            Debug.Log(responseText);
+            Debug.Log(responseData);
             if (statusCode == 200)
             {
                 if (responseData != null)
                 {
-                    downloadData = Encoding.UTF8.GetString(responseData, 0, responseData.Length);
-                    mediaList = JsonConvert.DeserializeObject<List<Media>>(downloadData);
-                    foreach (var item in mediaList)
+                    dataString = Encoding.UTF8.GetString(responseData, 0, responseData.Length);
+                    var detailsItem = JsonConvert.DeserializeObject<List<DetailsItem>>(responseText);
+
+                    mediaList = detailsItem[0].items;
+                    ocrText= detailsItem[0].text;
+                    wikipedia= detailsItem[0].wikipedia;
+                    recommendations = detailsItem[0].recommendations;
+
+                    int index = 0;
+                    foreach (var media in mediaList)
                     {
-                       // Debug.Log(item.name);
-                        addItem(item.name, item.tumbnail, item.id, item.type);
+                        addItems(media, ImgList[index]);
+                        index++;
                     }
+
+                    for (int i = index; i < 6; i++)
+                        ImgList[i].SetActive(false);
+
+                    if (ocrText.Length == 0)
+                        OCRText.SetActive(false);
+                    else
+                        OCRText.GetComponent<Text>().text = ocrText;
+
+                    if (wikipedia.Length == 0)
+                        WikiButton.SetActive(false);
+                    else
+                        wikiText.text = wikipedia;
+
+                    if (recommendations.Count == 0)
+                    {
+                        RecommendationOne.SetActive(false);
+                        RecommendationTwo.SetActive(false);
+                        RecommendationThree.SetActive(false);
+                    }
+                    else
+                    {
+                        int indexRec = 0;
+                        foreach (var media in mediaList)
+                        {
+                            addItems(media, ImgList[indexRec]);
+                            indexRec++;
+                        }
+
+                        if(index == 1)
+                        {
+                            RecommendationTwo.SetActive(false);
+                            RecommendationThree.SetActive(false);
+                        }
+                        else if (index == 2)
+                            RecommendationThree.SetActive(false);
+
+                    }
+                        
                 }
             }
         };
-        HttpRequest.Send(this, "GET", url, null, array, myHandler1);*/
-
-        using (StreamReader r = new StreamReader(mediaPath))
-        {
-            string json = r.ReadToEnd();
-            mediaList = JsonConvert.DeserializeObject<List<Media>>(json);
-            int index = 0;
-            foreach (var media in mediaList)
-            {
-                addItems(media, ImgList[index] );
-                index++;
-            }
-            
-        }
-
+        HttpRequest.Send(this, "POST", url, null, array, myHandler1);
     }
 
     private void addItems(Media media, GameObject ImgX)
     {
-        byte[] imageBytes = Convert.FromBase64String(media.tumbnail);
+        byte[] imageBytes = Convert.FromBase64String(media.thumbnail);
         Texture2D tex = new Texture2D(2, 2);
         tex.LoadImage(imageBytes);
-        Sprite spriteImg = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        Sprite spriteImg = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f));
 
         ImgX.GetComponent<Image>().sprite = spriteImg;
     }
 
     void Start()
     {
+        Global.detailsOrAdd = true;
 
         fillImgList();
-        /*welcome = GameObject.FindObjectOfType<WelcomeController>();
-        userId = int.Parse(welcome.id.text);
-        Debug.Log(userId);*/
-        loadMedia();
+        OCRText = GameObject.Find("OCRText");
+        WikiButton = GameObject.Find("WikiButton");
+        RecommendationOne = GameObject.Find("RecommendationOne");
+        RecommendationTwo = GameObject.Find("RecommendationTwo");
+        RecommendationThree = GameObject.Find("RecommendationThree");
+        ArtTitleLabel = GameObject.Find("ArtTitleLabel");
+        CreateArtButton = GameObject.Find("CreateArtButton");
+        if(Global.detailsOrAdd == false)
+        {
+            ArtTitle = GameObject.Find("ArtTitle");
+            showDetailsScene();
+            loadMedia();
+        }
+            
+        else
+            hideDetailsScene();
+    }
+
+    public void createNewArt()
+    {
+        string artTitle = ArtTitle.GetComponent<Text>().text;
+        string userId = SettingsController.GetUserId().ToString();
+        Debug.Log(artTitle);
+
+        string url = "http://37.148.210.36:8081/createArt?userId=" + "26" + "&artTitle=" + artTitle;
+        byte[] array = null;
+
+        HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
+        {
+            Debug.Log(statusCode);
+            Debug.Log(responseText);
+            if (statusCode == 200)
+            {
+                if (responseData != null)
+                {
+                    var artId = (int)JObject.Parse(responseText)["artId"];
+                    Global.detailedItemId = artId;
+                }
+            }
+        };
+        HttpRequest.Send(this, "POST", url, null, array, myHandler1);
+    }
+
+    void hideDetailsScene()
+    {
+        foreach (var ImgBtn in ImgList)
+        {
+            ImgBtn.SetActive(false);
+        }
+
+        OCRText.SetActive(false);
+        WikiButton.SetActive(false);
+        RecommendationOne.SetActive(false);
+        RecommendationTwo.SetActive(false);
+        RecommendationThree.SetActive(false);
+        GameObject.Find("AddOcr").SetActive(false);
+        GameObject.Find("AddPhoto").SetActive(false);
+        GameObject.Find("Recommendations").SetActive(false);
+        GameObject.Find("ExtraInfo").SetActive(false);
+
+        ArtTitle.SetActive(true);
+        ArtTitleLabel.SetActive(true);
+        CreateArtButton.SetActive(true);
+    }
+
+    void showDetailsScene()
+    {
+        foreach (var ImgBtn in ImgList)
+        {
+            ImgBtn.SetActive(true);
+        }
+
+        OCRText.SetActive(true);
+        WikiButton.SetActive(true);
+        RecommendationOne.SetActive(true);
+        RecommendationTwo.SetActive(true);
+        RecommendationThree.SetActive(true);
+        GameObject.Find("AddOcr").SetActive(true);
+        GameObject.Find("AddPhoto").SetActive(true);
+        GameObject.Find("Recommendations").SetActive(true);
+        GameObject.Find("ExtraInfo").SetActive(true);
+
+        ArtTitle.SetActive(false);
+        ArtTitleLabel.SetActive(false);
+        CreateArtButton.SetActive(false);
     }
 
     void fillImgList()
@@ -98,51 +236,17 @@ public class DetailsController : MonoBehaviour
         ImgList[5] = ImgSix;     
     }
 
-    public void addItem(string name, string image, string id, string type)
+    public void addPhoto()
     {
-        /*AndroidJavaClass jc = new AndroidJavaClass("android.os.Environment");
-        string path = jc.CallStatic<AndroidJavaObject>("getExternalStoragePublicDirectory", jc.GetStatic<string>("DIRECTORY_DCIM")).Call<string>("getAbsolutePath");
-        path = Path.Combine(path, "CommunicaptionMedias");
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
-        string path2 = path + name;
-        if (type == "image")
-        {
-            path2 = path2 + ".jpg";
-        }
-        else if (type == "video")
-        {
-            path2 = path2 + ".mp4";
-        }
-        if (!File.Exists(path2))
-        {
-            downloaded.GetComponent<Image>().enabled = true;
-        }
-        else
-        {
-            downloaded.GetComponent<Image>().enabled = false;
-        }*/
-
-        //var copy = Instantiate(itemTemplate);
-        //copy.transform.parent = content.transform;
-        //copy.transform.localPosition = Vector3.zero;
-
-        //copy.GetComponentInChildren<Text>().text = name;
-        //int copyOfIndex = index;
-
-        //byte[] imageBytes = Convert.FromBase64String(image);
-        //Texture2D tex = new Texture2D(2, 2);
-        //tex.LoadImage(imageBytes);
-        //Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
-
-        //copy.GetComponent<Image>().sprite = sprite;
-
-        //copy.GetComponent<Button>().onClick.AddListener(() => {
-        //    Debug.Log("Index number " + mediaList[copyOfIndex].name + copyOfIndex);
-        //    downloadMedia(copyOfIndex);
-        //});
-        //index++;
+        Global.mediaOrText = false;
+        SceneManager.LoadScene("Ocr");
     }
+
+    public void addOcr()
+    {
+        Global.mediaOrText = true;
+        SceneManager.LoadScene("Ocr");
+    }
+
+   
 }

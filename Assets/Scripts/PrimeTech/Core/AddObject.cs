@@ -48,7 +48,7 @@ namespace PrimeTech.Core
                          mediaList = JsonConvert.DeserializeObject<List<Media>>(downloadData);
                          foreach (var item in mediaList)
                          {
-                              addItem(item.name, item.tumbnail, item.id, item.type);
+                              addItem(item.name, item.thumbnail, item.id, item.type);
                          }
                      }   
                  } 

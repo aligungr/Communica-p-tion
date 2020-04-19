@@ -8,7 +8,7 @@ namespace PrimeTech.Core
     public class Media
     {
         public string name;
-        public string tumbnail;
+        public string thumbnail;
         public string id;
         public string type;
     }
