@@ -7,9 +7,8 @@ namespace PrimeTech.Core
     [Serializable]
     public class Media
     {
-        public string name;
-        public string tumbnail;
-        public string id;
-        public string type;
+        public string mediaId;
+        public string fileName;
+        public string thumbnail;
     }
 }

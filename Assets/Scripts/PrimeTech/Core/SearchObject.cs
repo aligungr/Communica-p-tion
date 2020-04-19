@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SearchObject : MonoBehaviour
@@ -14,14 +15,16 @@ public class SearchObject : MonoBehaviour
     {
         string keyword = inputField.GetComponent<Text>().text;
         bool spellCheck = this.spellCheck.GetComponent<Toggle>().isOn;
+        Global.searchWord = keyword;
         
         HttpRequest.HttpResponseHandler responseHandler = (int statusCode, string responseText, byte[] responseData) => {
             if (statusCode == 200)
             {
                 Debug.Log(responseText);
+                Global.searchResult = responseText;
                 if (responseData != null)
                 {
-                    //Debug.Log("TO-DO Search");
+                    SceneManager.LoadScene("SearchResultScene");
                 }
             }
         };
