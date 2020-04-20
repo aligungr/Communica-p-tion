@@ -57,7 +57,7 @@ public class NativeCam : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.LoadLevel("DetailsScene");
+            Application.LoadLevel("OcrGaleryScene");
         }
     }
 
@@ -146,7 +146,7 @@ public class NativeCam : MonoBehaviour
     public void backToGallery()
     {
         Debug.Log("Butona Tıklandı");
-        SceneManager.LoadScene("DetailsScene");
+        SceneManager.LoadScene("OcrGaleryScene");
     }
     public void YeniResimCek()
     {

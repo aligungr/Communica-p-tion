@@ -164,7 +164,7 @@ public class DetailsController : MonoBehaviour
         string userId = SettingsController.GetUserId().ToString();
         Debug.Log(artTitle);
 
-        string url = "http://37.148.210.36:8081/createArt?userId=" + "26" + "&artTitle=" + artTitle;
+        string url = "http://37.148.210.36:8081/createArt?userId=" + userId + "&artTitle=" + artTitle;
         byte[] array = null;
 
         HttpResponseHandler myHandler1 = (int statusCode, string responseText, byte[] responseData) =>
@@ -178,7 +178,7 @@ public class DetailsController : MonoBehaviour
                     var artId = (int)JObject.Parse(responseText)["artId"];
                     Global.detailedItemId = artId;
                     Global.detailsOrAdd = false;
-                    SceneManager.LoadScene("GaleryScene");
+                    SceneManager.LoadScene("Ocr");
                 }
             }
         };
@@ -341,6 +341,12 @@ public class DetailsController : MonoBehaviour
             Global.bigResizedPicture = mediaList[5].thumbnail;
             SceneManager.LoadScene("BigPictureScene");
         }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene("OcrGaleryScene");
     }
 
 }
