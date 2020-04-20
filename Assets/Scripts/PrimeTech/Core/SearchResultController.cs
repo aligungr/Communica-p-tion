@@ -47,9 +47,7 @@ namespace PrimeTech.Core
 
         public void addItem(string text, string ArtId)
         {
-            var copy = Instantiate(itemTemplate);
-            copy.transform.parent = content.transform;
-            copy.transform.localPosition = Vector3.zero;
+            var copy = Instantiate(itemTemplate, content.transform);
 
             copy.GetComponentInChildren<Text>().text = text;
             int copyOfIndex = index;

@@ -80,9 +80,7 @@ namespace PrimeTech.Core
                  downloaded.GetComponent<Image>().enabled = false;
              }
 
-            var copy = Instantiate(itemTemplate);
-            copy.transform.parent = content.transform;
-            copy.transform.localPosition = Vector3.zero;
+            var copy = Instantiate(itemTemplate, content.transform);
 
             copy.GetComponentInChildren<Text>().text = name;
             int copyOfIndex = index;
