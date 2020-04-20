@@ -68,9 +68,8 @@ namespace PrimeTech.Core
             {
                 ocrText.GetComponent<Text>().text = "";
             }
-            var copy = Instantiate(itemTemplate);
-            copy.transform.parent = content.transform;
-            copy.transform.localPosition = Vector3.zero;
+            var copy = Instantiate(itemTemplate, content.transform);
+            
 
             copy.GetComponentInChildren<Text>().text = name;
             int copyOfIndex = index;
