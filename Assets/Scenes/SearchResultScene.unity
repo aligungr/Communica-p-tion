@@ -213,7 +213,7 @@ RectTransform:
   m_GameObject: {fileID: 180613677}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 808879899}
   m_RootOrder: 0
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 246166472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cc476710c7d62a479bb82d7214a1bd7, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c626a0a6076ca24d88625a3fbade41a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemTemplate: {fileID: 808879898}
@@ -1295,10 +1295,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 20
     m_Right: 40
-    m_Top: 200
-    m_Bottom: 200
+    m_Top: 150
+    m_Bottom: 100
   m_ChildAlignment: 1
-  m_Spacing: 150
+  m_Spacing: 100
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
