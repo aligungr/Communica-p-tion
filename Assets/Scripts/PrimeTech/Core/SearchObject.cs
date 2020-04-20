@@ -41,4 +41,10 @@ public class SearchObject : MonoBehaviour
         byte[] array = null;
         HttpRequest.Send(this, "GET", url, null, array, responseHandler);
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene("OcrGaleryScene");
+    }
 }

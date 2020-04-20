@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,8 +30,10 @@ namespace PrimeTech.Core
         private void loadMedia()
         {
             string json = Global.searchResult;
+            Debug.Log(json);
             //Debug.Log(json); 
-            string downloadData = json.Substring(11, json.Length - 13);
+            string downloadData = json.Substring(12, json.Length - 15);
+            Debug.Log(downloadData); ;
             mediaList = JsonConvert.DeserializeObject<List<Result>>(downloadData); 
             foreach (var item in mediaList)
             {
@@ -61,6 +64,12 @@ namespace PrimeTech.Core
                 SceneManager.LoadScene("DetailsScene");
             });
             index++;
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                SceneManager.LoadScene("SearchScene");
         }
     }
 }
