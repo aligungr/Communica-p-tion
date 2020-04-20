@@ -30,11 +30,12 @@ namespace PrimeTech.Core
         private void loadMedia()
         {
             string json = Global.searchResult;
-            Debug.Log(json);
+            Debug.Log("json:" + json);
             //Debug.Log(json); 
-            string downloadData = json.Substring(12, json.Length - 15);
-            Debug.Log(downloadData); ;
-            mediaList = JsonConvert.DeserializeObject<List<Result>>(downloadData); 
+            //string downloadData = json.Substring(12, json.Length - 15);
+            //Debug.Log(downloadData); ;
+            mediaList = JsonConvert.DeserializeObject<List<Result>>(json);
+            Debug.Log("media:" + mediaList[0].Text);
             foreach (var item in mediaList)
             {
                 //Debug.Log(item.ArtId);
@@ -50,9 +51,7 @@ namespace PrimeTech.Core
 
         public void addItem(string text, string ArtId)
         {
-            var copy = Instantiate(itemTemplate);
-            copy.transform.parent = content.transform;
-            copy.transform.localPosition = Vector3.zero;
+            var copy = Instantiate(itemTemplate, content.transform);
 
             copy.GetComponentInChildren<Text>().text = text;
             int copyOfIndex = index;
