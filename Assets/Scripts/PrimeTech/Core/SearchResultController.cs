@@ -30,11 +30,12 @@ namespace PrimeTech.Core
         private void loadMedia()
         {
             string json = Global.searchResult;
-            Debug.Log(json);
+            Debug.Log("json:" + json);
             //Debug.Log(json); 
-            string downloadData = json.Substring(12, json.Length - 15);
-            Debug.Log(downloadData); ;
-            mediaList = JsonConvert.DeserializeObject<List<Result>>(downloadData); 
+            //string downloadData = json.Substring(12, json.Length - 15);
+            //Debug.Log(downloadData); ;
+            mediaList = JsonConvert.DeserializeObject<List<Result>>(json);
+            Debug.Log("media:" + mediaList[0].Text);
             foreach (var item in mediaList)
             {
                 //Debug.Log(item.ArtId);
